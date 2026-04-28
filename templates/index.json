@@ -46,6 +46,13 @@
       "type": "newsletter",
       "settings": {}
     },
+    "instagram_testimonials": {
+      "type": "instagram-testimonials",
+      "settings": {
+        "title": "Customers",
+        "subtitle": "Real people. Real experiences. Real love."
+      }
+    },
     "feature_bar": {
       "type": "feature-bar",
       "settings": {},
@@ -104,6 +111,7 @@
     "process_reveal",
     "best_sellers",
     "collection_list",
+    "instagram_testimonials",
     "newsletter"
   ]
 }

@@ -1,0 +1,394 @@
+<style>
+  .insta-testimonials {
+    padding: 100px 0;
+    background-color: #ffffff;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .insta-testimonials-header {
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .insta-subtitle {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .insta-title {
+    font-family: 'Lora', serif;
+    font-size: 42px;
+    color: #000;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .testimonial-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Message Blob */
+  .note-blob {
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 18px;
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #000;
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease;
+  }
+
+  .note-blob:hover {
+    transform: translateY(-5px);
+  }
+
+  .note-blob::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #000;
+  }
+
+  .note-blob-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .note-blob-inner::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fff;
+    z-index: 2;
+  }
+
+  /* Profile Ring Animation */
+  .profile-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ring-circle {
+    fill: none;
+    stroke: url(#instaGradient);
+    stroke-width: 3;
+    stroke-linecap: round;
+    /* Circumference for r=48 is ~301.6 */
+    stroke-dasharray: 302;
+    stroke-dashoffset: 302;
+  }
+
+  .profile-image-wrap {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #eee;
+    z-index: 2;
+    position: relative;
+  }
+
+  .profile-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .customer-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+  }
+
+  .insta-footer {
+    margin-top: 60px;
+  }
+
+  .insta-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    border: 1px solid #000;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .insta-cta:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .insta-cta svg {
+    transition: transform 0.3s ease;
+  }
+
+  .insta-cta:hover svg {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 1200px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .insta-title {
+      font-size: 56px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px 15px;
+      padding: 0 20px;
+    }
+    .insta-title {
+      font-size: 42px;
+    }
+    .profile-container {
+      width: 80px;
+      height: 80px;
+    }
+  }
+</style>
+
+<section class="insta-testimonials">
+  <!-- Hidden SVG for gradient definition -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="instaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#f09433;stop-opacity:1" />
+        <stop offset="25%" style="stop-color:#e6683c;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#dc2743;stop-opacity:1" />
+        <stop offset="75%" style="stop-color:#cc2366;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#bc1888;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="insta-testimonials-header">
+    <span class="insta-subtitle">{{ section.settings.subtitle }}</span>
+    <h2 class="insta-title">{{ section.settings.title }}</h2>
+  </div>
+
+  <div class="testimonials-grid" data-aos="fade-up">
+    {% for block in section.blocks %}
+      <div class="testimonial-item" {{ block.shopify_attributes }}>
+        <div class="note-blob">
+          <div class="note-blob-inner">
+            {{ block.settings.text }}
+          </div>
+        </div>
+        
+        <div class="profile-container">
+          <svg viewBox="0 0 100 100" class="ring-svg">
+            <circle cx="50" cy="50" r="48" class="ring-circle" />
+          </svg>
+          <div class="profile-image-wrap">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.name }}">
+            {% else %}
+              <img src="https://ui-avatars.com/api/?name={{ block.settings.name }}&background=f4eee6&color=1a1a1a" alt="{{ block.settings.name }}">
+            {% endif %}
+          </div>
+        </div>
+        
+        <p class="customer-name">{{ block.settings.name }}</p>
+      </div>
+    {% endfor %}
+
+    <!-- "And more" placeholder block if needed -->
+    {% if section.settings.show_and_more %}
+      <div class="testimonial-item">
+        <div class="note-blob" style="border-style: dashed; border-color: #ccc; opacity: 0.6;">
+          Join hundreds of happy customers!
+        </div>
+        <div class="profile-container">
+          <svg viewBox="0 0 100 100" class="ring-svg">
+            <circle cx="50" cy="50" r="48" class="ring-circle" style="stroke: #eee; stroke-dasharray: none; stroke-dashoffset: 0;" />
+          </svg>
+          <div class="profile-image-wrap" style="background: transparent; border: none; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+        </div>
+        <p class="customer-name" style="color: #999;">and more</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="insta-footer">
+    <a href="{{ section.settings.button_link }}" class="insta-cta">
+      {{ section.settings.button_label }}
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Animate the rings on scroll
+    gsap.to('.insta-testimonials .ring-circle', {
+      strokeDashoffset: 0,
+      duration: 2,
+      stagger: 0.1,
+      ease: 'power2.inOut',
+      scrollTrigger: {
+        trigger: '.insta-testimonials',
+        start: 'top 70%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Instagram Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customers"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real people. Real experiences. Real love."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Join our happy customers"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_and_more",
+      "label": "Show 'and more' placeholder",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testimonial Text",
+          "default": "Honestly, the quality is beyond amazing!"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Ananya S."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "name": "Ananya S.", "text": "Honestly, the quality is beyond amazing!" } },
+        { "type": "testimonial", "settings": { "name": "Rohan M.", "text": "Super fast delivery and great packaging!" } },
+        { "type": "testimonial", "settings": { "name": "Priya T.", "text": "Loved the minimal design and feel." } },
+        { "type": "testimonial", "settings": { "name": "Karan D.", "text": "It just makes my daily routine so much easier." } },
+        { "type": "testimonial", "settings": { "name": "Neha R.", "text": "Beautifully crafted and totally worth it!" } },
+        { "type": "testimonial", "settings": { "name": "Arjun P.", "text": "Customer support was super helpful 🙂" } },
+        { "type": "testimonial", "settings": { "name": "Vivek S.", "text": "My new go-to brand! 💯" } },
+        { "type": "testimonial", "settings": { "name": "Meera K.", "text": "Even better than what I expected." } },
+        { "type": "testimonial", "settings": { "name": "Aditya N.", "text": "Simple, elegant and effective." } },
+        { "type": "testimonial", "settings": { "name": "Sneha P.", "text": "You can feel the attention to detail." } },
+        { "type": "testimonial", "settings": { "name": "Dhruv J.", "text": "Will definitely recommend this to my friends!" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
