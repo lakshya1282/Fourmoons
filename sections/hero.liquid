@@ -129,7 +129,7 @@
   {% if section.settings.image != blank %}
     <img src="{{ section.settings.image | image_url: width: 3000 }}" class="bespoke-hero__bg" alt="Hero background">
   {% else %}
-    <img src="https://placehold.co/1920x1080/fcfaf7/1a1a1a?text=Four+Moons+Editorial" class="bespoke-hero__bg" alt="Hero background">
+    <img src="{{ 'hero-bg.jpg' | asset_url }}" class="bespoke-hero__bg" alt="Hero background">
   {% endif %}
 
   <div class="hero-overlay"></div>
