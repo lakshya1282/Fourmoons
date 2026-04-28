@@ -1,0 +1,311 @@
+<style>
+  #section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .reveal-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 1600px;
+    align-items: center;
+  }
+  .reveal-content {
+    padding: 80px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    order: 1;
+  }
+  .reveal-image-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    order: 2;
+  }
+  /* Reverse order for image left layout */
+  .reveal-container.reversed .reveal-content {
+    order: 2;
+  }
+  .reveal-container.reversed .reveal-image-wrapper {
+    order: 1;
+  }
+  
+  .reveal-subtitle {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #777;
+    font-weight: 500;
+  }
+  .reveal-title {
+    font-family: serif;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .reveal-description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    max-width: 450px;
+    margin: 0;
+  }
+  .reveal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #1a1a1a;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+  .reveal-link:hover {
+    gap: 20px;
+  }
+  
+  /* Mask Reveal Styles */
+  .reveal-image-mask {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .reveal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .reveal-text-mask {
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1024px) {
+    .reveal-container {
+      grid-template-columns: 1fr !important;
+      direction: ltr !important;
+    }
+    .reveal-content {
+      padding: 60px 40px;
+      order: 2;
+    }
+    .reveal-image-wrapper {
+      height: 400px;
+      min-height: auto;
+      order: 1;
+    }
+    .reveal-title {
+      font-size: 32px;
+    }
+  }
+</style>
+
+<section id="section-{{ section.id }}">
+  <div class="reveal-container {% if section.settings.layout == 'image_left' %}reversed{% endif %}">
+    <div class="reveal-content">
+      <div class="reveal-text-mask">
+        {% if section.settings.subtitle != blank %}
+          <span class="reveal-subtitle">{{ section.settings.subtitle }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="reveal-title">{{ section.settings.title }}</h2>
+        {% endif %}
+      </div>
+      
+      <div class="reveal-text-mask">
+        {% if section.settings.description != blank %}
+          <div class="reveal-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="reveal-text-mask">
+        {% if section.settings.link_label != blank %}
+          <a href="{{ section.settings.link_url }}" class="reveal-link">
+            {{ section.settings.link_label }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="reveal-image-wrapper">
+      <div class="reveal-image-mask">
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.title }}" class="reveal-image" loading="lazy">
+        {% else %}
+          {% if section.settings.layout == 'image_left' %}
+            <img src="{{ 'image-with-text-2.png' | asset_url }}" alt="Section Image" class="reveal-image">
+          {% else %}
+            <img src="{{ 'our-story.png' | asset_url }}" alt="Section Image" class="reveal-image">
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = document.getElementById("section-{{ section.id }}");
+    if (!section) return;
+
+    const isImageLeft = {% if section.settings.layout == 'image_left' %}true{% else %}false{% endif %};
+    const imageMask = section.querySelector(".reveal-image-mask");
+    const image = section.querySelector(".reveal-image");
+    const textMasks = section.querySelectorAll(".reveal-text-mask");
+
+    // Image Mask Reveal
+    gsap.fromTo(imageMask, {
+      clipPath: "inset(0% 0% 100% 0%)",
+      webkitClipPath: "inset(0% 0% 100% 0%)"
+    }, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      webkitClipPath: "inset(0% 0% 0% 0%)",
+      duration: 2.5,
+      ease: "power4.inOut",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 95%",
+      }
+    });
+
+    gsap.fromTo(image, {
+      scale: 1.2,
+      y: -50
+    }, {
+      scale: 1,
+      y: 0,
+      duration: 2.5,
+      ease: "power4.inOut",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 95%",
+      }
+    });
+
+    // Text Mask Reveal Staggered
+    gsap.fromTo(textMasks, {
+      clipPath: "inset(100% 0% 0% 0%)",
+      webkitClipPath: "inset(100% 0% 0% 0%)",
+      y: 50
+    }, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      webkitClipPath: "inset(0% 0% 0% 0%)",
+      y: 0,
+      duration: 2.0,
+      stagger: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 95%",
+      }
+    });
+
+    // Sticky Stacking Logic
+    if ({% if section.settings.enable_sticky %}true{% else %}false{% endif %}) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        pin: true,
+        pinSpacing: false,
+        end: "bottom top",
+        onUpdate: self => {
+          // Subtle fade out as it stays pinned? (Optional)
+          // section.style.opacity = 1 - self.progress * 0.5;
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Image with Text Reveal",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image alignment",
+      "default": "image_right",
+      "options": [
+        {
+          "value": "image_left",
+          "label": "Image left"
+        },
+        {
+          "value": "image_right",
+          "label": "Image right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Stacking",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "THE PROCESS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Crafted with Care, One Batch at a Time"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Every candle is hand-poured in our studio using natural soy wax and phthalate-free fragrance oils. We take pride in the slow process that ensures each piece is unique and of the highest quality.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "VIEW OUR PROCESS"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text Reveal"
+    }
+  ]
+}
+{% endschema %}

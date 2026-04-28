@@ -1,0 +1,109 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "Elevate Your Everyday",
+        "subtitle": "Handcrafted scents for a calm, beautiful life.",
+        "button_label": "Shop Collection"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Fragrance you love"
+      }
+    },
+    "our_story": {
+      "type": "our-story",
+      "settings": {
+        "title": "Rooted in Simplicity, Made with Intention"
+      }
+    },
+    "process_reveal": {
+      "type": "image-text-reveal",
+      "settings": {
+        "layout": "image_left",
+        "bg_color": "#f9f7f2",
+        "subtitle": "OUR PROCESS",
+        "title": "Crafted with Care, One Batch at a Time",
+        "description": "<p>Every candle is hand-poured in our studio using natural soy wax and phthalate-free fragrance oils. We take pride in the slow process that ensures each piece is unique and of the highest quality.</p>",
+        "link_label": "LEARN MORE"
+      }
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "title": "Loved by Many",
+        "subtitle": "BEST SELLERS"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    },
+    "feature_bar": {
+      "type": "feature-bar",
+      "settings": {},
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Natural Ingredients",
+            "subtitle": "Clean, vegan & non-toxic",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6Z\"></path><path d=\"M11 20c-4 0-6-3-6-7s2-7 6-7 6 3 6 7-2 7-6 7Z\"></path></svg>"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Handcrafted",
+            "subtitle": "Made in small batches",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"></path><path d=\"M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.82 2.96 0l2.96-2.96\"></path><path d=\"m12 18-2-2\"></path></svg>"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "title": "Sustainable",
+            "subtitle": "Eco-conscious packaging",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z\"></path><path d=\"m3.3 7 8.7 5 8.7-5\"></path><path d=\"M12 22V12\"></path></svg>"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "title": "Made in India",
+            "subtitle": "Proudly local",
+            "icon_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z\"></path><path d=\"m9 12 2 2 4-4\"></path></svg>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ]
+    },
+    "bento_grid": {
+      "type": "bento-grid",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "feature_bar",
+    "bento_grid",
+    "featured_collection",
+    "our_story",
+    "process_reveal",
+    "best_sellers",
+    "collection_list",
+    "newsletter"
+  ]
+}

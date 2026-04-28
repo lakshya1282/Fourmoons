@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    <style>
+      :root {
+        --font-heading-family: 'Lora', serif;
+        --font-body-family: 'Inter', sans-serif;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-body-family);
+        background-color: #fff;
+        color: #000;
+      }
+
+      html.lenis, html.lenis body {
+        height: auto;
+      }
+
+      .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+      }
+
+      .lenis.lenis-smooth [data-lenis-prevent] {
+        overscroll-behavior: contain;
+      }
+
+      .lenis.lenis-stopped {
+        overflow: hidden;
+      }
+
+      .lenis.lenis-scrolling iframe {
+        pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body class="template-{{ template | replace: '.', '-' | replace: '/', '-' }}">
+    {% section 'header' %}
+
+    <main role="main" id="MainContent">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer-promos' %}
+    {% section 'footer' %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script>
+      // Initialize Lenis
+      const lenis = new Lenis();
+
+      // Update ScrollTrigger on Lenis scroll
+      lenis.on('scroll', ScrollTrigger.update);
+
+      // Integration with GSAP ticker
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+
+      // Disable lag smoothing in GSAP for better sync
+      gsap.ticker.lagSmoothing(0);
+
+      // Initialize AOS
+      AOS.init({
+        duration: 1500,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 100
+      });
+
+      // Refresh AOS on Lenis scroll
+      lenis.on('scroll', () => {
+        AOS.refresh();
+      });
+    </script>
+    {% section 'cart-drawer' %}
+  </body>
+</html>

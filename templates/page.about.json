@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "about-hero",
+      "settings": {}
+    },
+    "philosophy": {
+      "type": "about-philosophy",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "philosophy"
+  ]
+}

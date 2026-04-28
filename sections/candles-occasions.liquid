@@ -1,0 +1,205 @@
+<style>
+  .occasions-slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #1a1a1a;
+  }
+
+  .occasions-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .occasion-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .occasion-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: brightness(0.7);
+  }
+
+  .occasion-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    z-index: 5;
+    width: 100%;
+    padding: 0 40px;
+  }
+
+  .occasion-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .occasion-title {
+    font-family: 'Lora', serif;
+    font-size: 64px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .occasion-slide.active .occasion-label,
+  .occasion-slide.active .occasion-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0.5s;
+  }
+
+  /* Fixed/Parallax logic handled by GSAP */
+  
+  .occasions-nav {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 10;
+  }
+
+  .occasion-dot {
+    width: 50px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .occasion-dot.active {
+    background: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .occasion-title {
+      font-size: 38px;
+    }
+  }
+</style>
+
+<section class="occasions-slideshow" id="occasionsSection">
+  <div class="occasions-slider" id="occasionsSlider">
+    <!-- Slide 1 -->
+    <div class="occasion-slide active" data-index="0">
+      <img src="{{ 'occasion-1.png' | asset_url }}" class="parallax-img" alt="Occasion 1">
+      <div class="occasion-content">
+        <span class="occasion-label">Special Occasions</span>
+        <h2 class="occasion-title">Moments of Serenity</h2>
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="occasion-slide" data-index="1">
+      <img src="{{ 'occasion-2.jpg' | asset_url }}" class="parallax-img" alt="Occasion 2">
+      <div class="occasion-content">
+        <span class="occasion-label">Special Occasions</span>
+        <h2 class="occasion-title">Dinner Under the Stars</h2>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="occasion-slide" data-index="2">
+      <img src="{{ 'occasion-3.jpg' | asset_url }}" class="parallax-img" alt="Occasion 3">
+      <div class="occasion-content">
+        <span class="occasion-label">Special Occasions</span>
+        <h2 class="occasion-title">Cozy Self-Care</h2>
+      </div>
+    </div>
+    <!-- Slide 4 -->
+    <div class="occasion-slide" data-index="3">
+      <img src="{{ 'occasion-4.jpg' | asset_url }}" class="parallax-img" alt="Occasion 4">
+      <div class="occasion-content">
+        <span class="occasion-label">Special Occasions</span>
+        <h2 class="occasion-title">Celebrating Milestones</h2>
+      </div>
+    </div>
+    <!-- Slide 5 -->
+    <div class="occasion-slide" data-index="4">
+      <img src="{{ 'occasion-5.jpg' | asset_url }}" class="parallax-img" alt="Occasion 5">
+      <div class="occasion-content">
+        <span class="occasion-label">Special Occasions</span>
+        <h2 class="occasion-title">Gifts from the Heart</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="occasions-nav">
+    <div class="occasion-dot active" data-index="0"></div>
+    <div class="occasion-dot" data-index="1"></div>
+    <div class="occasion-dot" data-index="2"></div>
+    <div class="occasion-dot" data-index="3"></div>
+    <div class="occasion-dot" data-index="4"></div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('occasionsSlider');
+    const dots = document.querySelectorAll('.occasion-dot');
+    const slides = document.querySelectorAll('.occasion-slide');
+    let current = 0;
+    const total = slides.length;
+
+    function goToSlide(index) {
+      current = index;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function autoSlide() {
+      let next = (current + 1) % total;
+      goToSlide(next);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        clearInterval(occasionInterval);
+        goToSlide(parseInt(dot.dataset.index));
+        occasionInterval = setInterval(autoSlide, 5000);
+      });
+    });
+
+    let occasionInterval = setInterval(autoSlide, 5000);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Candles Occasions",
+  "settings": []
+}
+{% endschema %}

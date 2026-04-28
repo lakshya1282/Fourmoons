@@ -1,0 +1,38 @@
+<div class="product-page" style="padding: 120px 40px; max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+  <div class="product-media">
+    {% if product.featured_image %}
+      <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title }}" style="width: 100%;">
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'product-placeholder' }}
+    {% endif %}
+  </div>
+
+  <div class="product-info" style="padding-top: 40px;">
+    <h1 style="font-family: serif; font-size: 52px; margin: 0 0 10px 0; font-weight: 400; color: #000;">{{ product.title | default: "Example Product Title" }}</h1>
+    <p style="font-size: 24px; color: #333; margin-bottom: 40px;">{{ product.price | money | default: "$45.00" }}</p>
+
+    <div class="product-description" style="line-height: 1.8; color: #555; margin-bottom: 40px;">
+      {{ product.description | default: "This is a handcrafted premium candle made with the finest natural ingredients. Perfect for creating a calm and beautiful atmosphere in your home." }}
+    </div>
+
+    <form method="post" action="/cart/add" id="AddToCartForm">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      
+      <div class="product-qty" style="margin-bottom: 20px;">
+        <label for="quantity" style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;">Quantity</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" style="padding: 12px; width: 80px; border: 1px solid #ddd;">
+      </div>
+
+      <button type="submit" style="width: 100%; max-width: 400px; padding: 20px; background: #000; color: #fff; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; transition: background 0.3s ease;">
+        Add to Bag
+      </button>
+    </form>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Details",
+  "settings": []
+}
+{% endschema %}

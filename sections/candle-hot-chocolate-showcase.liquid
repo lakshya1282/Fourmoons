@@ -1,0 +1,424 @@
+<style>
+  .hc-showcase {
+    background-color: #fcfaf7; /* Off-white (Alternate) */
+    padding: 120px 0;
+    overflow: hidden;
+    color: #1a1a1a;
+    position: relative;
+  }
+
+  .hc-showcase::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(197, 168, 128, 0.3), transparent);
+  }
+
+  .hc-showcase-container {
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .hc-showcase-image {
+    flex: 1.2;
+    position: relative;
+    height: 800px;
+    border-radius: 0;
+    overflow: hidden;
+    clip-path: inset(0 0 100% 0);
+    box-shadow: inset -10px 0 30px rgba(0,0,0,0.03);
+  }
+
+  .showcase-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 4s ease-out;
+    transform: scale(1.02);
+  }
+
+  .showcase-slide.active {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+  }
+
+  .hc-showcase-image img {
+    width: 100%;
+    height: 120%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: -10%;
+    left: 0;
+  }
+
+  .hc-showcase-content {
+    flex: 1;
+    padding-right: 100px;
+    position: relative;
+    opacity: 0;
+  }
+
+  .editorial-number {
+    position: absolute;
+    top: -60px;
+    left: -30px;
+    font-family: 'Lora', serif;
+    font-size: 200px;
+    color: rgba(197, 168, 128, 0.05);
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .hc-showcase-title {
+    font-family: 'Lora', serif;
+    font-size: 56px;
+    font-weight: 300;
+    margin: 0 0 15px 0;
+    color: #1a1a1a;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .hc-showcase-subtitle {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #c5a880;
+    margin-bottom: 30px;
+    display: block;
+    letter-spacing: 0.05em;
+  }
+
+  .hc-showcase-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 50px;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .content-divider {
+    width: 40px;
+    height: 1px;
+    background-color: #c5a880;
+    margin-bottom: 40px;
+  }
+
+  /* Sizes */
+  .candle-sizes-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 25px;
+    display: block;
+    color: #888;
+  }
+
+  .candle-sizes {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 60px;
+    max-width: 480px;
+  }
+
+  .size-box {
+    flex: 1;
+    padding: 18px 10px;
+    border: 1px solid #e8e2d5;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a1a1a;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .size-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f4eee6;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: -1;
+  }
+
+  .size-box:hover::before {
+    transform: translateY(0);
+  }
+  
+  .size-box:hover {
+    border-color: #d1bfae;
+  }
+
+  .size-icon {
+    width: 18px;
+    height: 18px;
+    color: #1a1a1a;
+  }
+
+  /* Recommendations */
+  .recommendations-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 30px;
+    display: block;
+    color: #888;
+  }
+
+  .recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 60px;
+    max-width: 480px;
+  }
+
+  .rec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .rec-image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f4eee6;
+  }
+
+  .rec-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .rec-item:hover .rec-image img {
+    transform: scale(1.1);
+  }
+
+  .rec-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .shop-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #1a1a1a;
+    padding: 20px 40px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+    border: 1px solid #1a1a1a;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .shop-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: -1;
+  }
+
+  .shop-btn:hover {
+    color: #fff;
+  }
+
+  .shop-btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (max-width: 1024px) {
+    .hc-showcase {
+      padding: 60px 0;
+    }
+    .hc-showcase-container {
+      flex-direction: column;
+      gap: 40px;
+    }
+    .hc-showcase-content {
+      padding: 0 40px;
+    }
+    .hc-showcase-image {
+      height: 500px;
+    }
+  }
+</style>
+
+<section class="hc-showcase" id="hcShowcase">
+  <div class="hc-showcase-container">
+    <div class="hc-showcase-image" id="hcImage">
+      <div class="showcase-slide active">
+        <img src="{{ 'candle-hot-chocolate.png' | asset_url }}" alt="Hot Chocolate 1">
+      </div>
+      <div class="showcase-slide">
+        <img src="{{ 'candle-hot-chocolate-2.jpg' | asset_url }}" alt="Hot Chocolate 2">
+      </div>
+      <div class="showcase-slide">
+        <img src="{{ 'candle-hot-chocolate-3.jpg' | asset_url }}" alt="Hot Chocolate 3">
+      </div>
+    </div>
+
+    <div class="hc-showcase-content" id="hcContent">
+      <div class="editorial-number">03</div>
+      <h2 class="hc-showcase-title">Hot Chocolate</h2>
+      <span class="hc-showcase-subtitle">FRAGRANCE NO. 03 — COZY INDULGENCE</span>
+      <p class="hc-showcase-text">
+        Rich cocoa, melted marshmallows, and a hint of vanilla. This scent captures the essence of a warm winter evening by the fire. Indulgent, sweet, and incredibly cozy.
+      </p>
+
+      <div class="content-divider"></div>
+
+      <span class="candle-sizes-label">Select Your Vessel</span>
+      <div class="candle-sizes">
+        <div class="size-box">
+          <div class="size-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h12"></path><path d="M6 14h12"></path><path d="M6 10h12"></path><path d="M6 6h12"></path><path d="M12 2v4"></path></svg></div>
+          120 GMS
+        </div>
+        <div class="size-box">
+          <div class="size-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h12"></path><path d="M6 14h12"></path><path d="M6 10h12"></path><path d="M6 6h12"></path><path d="M12 2v4"></path></svg></div>
+          200 GMS
+        </div>
+        <div class="size-box">
+          <div class="size-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h12"></path><path d="M6 14h12"></path><path d="M6 10h12"></path><path d="M6 6h12"></path><path d="M12 2v4"></path></svg></div>
+          300 GMS
+        </div>
+      </div>
+
+      <span class="recommendations-label">Curated Pairings</span>
+      <div class="recommendations-grid">
+        <a href="#" class="rec-item">
+          <div class="rec-image"><img src="{{ 'products-hero-1.png' | asset_url }}" alt="Vanilla Oak"></div>
+          <span class="rec-title">Vanilla Oak</span>
+        </a>
+        <a href="#" class="rec-item">
+          <div class="rec-image"><img src="{{ 'products-hero-2.png' | asset_url }}" alt="Apple Cinnamon"></div>
+          <span class="rec-title">Apple Cin</span>
+        </a>
+        <a href="#" class="rec-item">
+          <div class="rec-image"><img src="{{ 'products-hero-3.png' | asset_url }}" alt="Roasted Coffee"></div>
+          <span class="rec-title">Coffee</span>
+        </a>
+        <a href="#" class="rec-item">
+          <div class="rec-image"><img src="{{ 'products-hero-1.png' | asset_url }}" alt="Wild Lavender"></div>
+          <span class="rec-title">Lavender</span>
+        </a>
+      </div>
+
+      <a href="/products/hot-chocolate" class="shop-btn">Acquire This Fragrance</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const hcTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hcShowcase',
+        start: 'top 70%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    hcTl.to('#hcImage', {
+      clipPath: 'inset(0 0 0% 0)',
+      duration: 1.8,
+      ease: 'power3.inOut'
+    }, 0);
+
+    hcTl.to('#hcContent', {
+      opacity: 1,
+      duration: 1.2,
+      ease: 'power2.out',
+      onComplete: () => {
+        const slides = document.querySelectorAll('#hcImage .showcase-slide');
+        let current = 0;
+        setInterval(() => {
+          slides[current].classList.remove('active');
+          current = (current + 1) % slides.length;
+          slides[current].classList.add('active');
+        }, 5000);
+      }
+    }, 0.2);
+
+    hcTl.from('#hcContent .editorial-number, #hcContent .hc-showcase-title, #hcContent .hc-showcase-subtitle, #hcContent .hc-showcase-text, #hcContent .content-divider, #hcContent .candle-sizes-label, #hcContent .candle-sizes, #hcContent .recommendations-label, #hcContent .recommendations-grid, #hcContent .shop-btn', {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.1,
+      ease: 'power3.out'
+    }, 0.5);
+
+    // Inverse Parallax Effect
+    gsap.to('#hcImage img', {
+      scrollTrigger: {
+        trigger: '#hcShowcase',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      },
+      y: '15%',
+      ease: 'none'
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hot Chocolate Showcase",
+  "settings": []
+}
+{% endschema %}

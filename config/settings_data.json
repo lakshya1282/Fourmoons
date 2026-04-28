@@ -1,0 +1,74 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "sections": {
+        "hero": {
+          "type": "hero",
+          "settings": {
+            "title": "Elevate Your Everyday",
+            "subtitle": "Handcrafted scents for a calm, beautiful life.",
+            "button_label": "Shop Collection"
+          }
+        },
+        "featured_collection": {
+          "type": "featured-collection",
+          "settings": {
+            "title": "Thoughtfully Crafted"
+          }
+        },
+        "our_story": {
+          "type": "our-story",
+          "settings": {
+            "title": "Rooted in Simplicity, Made with Intention"
+          }
+        },
+        "process_reveal": {
+          "type": "image-text-reveal",
+          "settings": {
+            "layout": "image_left",
+            "bg_color": "#f9f7f2",
+            "subtitle": "OUR PROCESS",
+            "title": "Crafted with Care, One Batch at a Time",
+            "description": "<p>Every candle is hand-poured in our studio using natural soy wax and phthalate-free fragrance oils. We take pride in the slow process that ensures each piece is unique and of the highest quality.</p>",
+            "link_label": "LEARN MORE"
+          }
+        },
+        "feature_bar": {
+          "type": "feature-bar",
+          "settings": {}
+        },
+        "bento_grid": {
+          "type": "bento-grid",
+          "settings": {}
+        },
+        "best_sellers": {
+          "type": "best-sellers",
+          "settings": {
+            "title": "Loved by Many",
+            "subtitle": "BEST SELLERS"
+          }
+        },
+        "collection_list": {
+          "type": "collection-list",
+          "settings": {}
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {}
+        }
+      },
+      "content_for_index": [
+        "hero",
+        "feature_bar",
+        "bento_grid",
+        "featured_collection",
+        "our_story",
+        "process_reveal",
+        "best_sellers",
+        "collection_list",
+        "newsletter"
+      ]
+    }
+  }
+}

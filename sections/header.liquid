@@ -1,0 +1,153 @@
+<style>
+  .site-header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    height: 90px;
+    box-sizing: border-box;
+    z-index: 50;
+    background: #f4f1eb;
+  }
+  .template-index .site-header {
+    position: absolute;
+  }
+  .header-logo {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000;
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nav-link {
+    color: #000;
+    text-decoration: none;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  .nav-link:hover {
+    opacity: 1;
+  }
+  .header-actions {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .header-action-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  .header-action-btn:hover {
+    opacity: 1;
+  }
+  .header-action-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+  }
+  .cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #000;
+    color: #fff;
+    font-size: 9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  @media (max-width: 1024px) {
+    .nav-links {
+      display: none;
+    }
+    .site-header {
+      padding: 20px;
+    }
+  }
+</style>
+
+<nav class="site-header">
+  <a href="/" class="header-logo">{{ shop.name }}</a>
+  
+  <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/collections/all" class="nav-link">Products</a>
+    <a href="/pages/candles" class="nav-link">Candles</a>
+    <a href="/pages/about" class="nav-link">About Us</a>
+    <a href="/pages/contact" class="nav-link">Contact</a>
+  </div>
+
+  <div class="header-actions">
+    <a href="{{ routes.search_url }}" class="header-action-btn" title="Search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </a>
+    {% liquid
+      assign account_href = routes.account_url
+      assign account_title = 'Account'
+
+      if customer
+        assign account_href = routes.account_url
+      else
+        assign account_href = routes.account_login_url
+        assign account_title = 'Login'
+      endif
+    %}
+    {% if shop.customer_accounts_enabled %}
+      <a href="{{ account_href }}" class="header-action-btn" title="{{ account_title }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </a>
+    {% else %}
+      <span class="header-action-btn" title="Account disabled" aria-disabled="true" style="opacity: 0.45; cursor: default;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </span>
+    {% endif %}
+    <a href="{{ routes.cart_url }}" class="header-action-btn cart-drawer-trigger" title="Cart" style="position: relative;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      {% if cart.item_count > 0 %}
+        <span class="cart-count">{{ cart.item_count }}</span>
+      {% endif %}
+    </a>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    }
+  ]
+}
+{% endschema %}

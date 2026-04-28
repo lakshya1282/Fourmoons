@@ -1,0 +1,251 @@
+<style>
+  .story-section {
+    background-color: {{ section.settings.bg_color }};
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .story-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 1600px;
+    align-items: center;
+  }
+  .story-content {
+    padding: 80px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .story-subtitle {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #777;
+    font-weight: 500;
+  }
+  .story-title {
+    font-family: serif; /* Handled by theme.liquid Lora font */
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .story-description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    max-width: 450px;
+    margin: 0;
+  }
+  .story-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #1a1a1a;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+  .story-link:hover {
+    gap: 20px;
+  }
+  .story-image-wrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+  }
+  .story-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 1024px) {
+    .story-container {
+      grid-template-columns: 1fr;
+    }
+    .story-content {
+      padding: 60px 40px;
+      order: 2;
+    }
+    .story-image-wrapper {
+      height: 400px;
+      min-height: auto;
+      order: 1;
+    }
+    .story-title {
+      font-size: 32px;
+    }
+  }
+
+  /* Mask Reveal Styles */
+  .story-image-mask {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    clip-path: inset(0 0 0 100%);
+  }
+  .story-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.2);
+  }
+  .story-text-mask {
+    position: relative;
+    overflow: hidden;
+    clip-path: inset(0 100% 0 0);
+    -webkit-clip-path: inset(0 100% 0 0);
+  }
+</style>
+
+<section class="story-section">
+  <div class="story-container">
+    <div class="story-content">
+      <div class="story-text-mask">
+        {% if section.settings.subtitle != blank %}
+          <span class="story-subtitle">{{ section.settings.subtitle }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="story-title">{{ section.settings.title }}</h2>
+        {% endif %}
+      </div>
+      
+      <div class="story-text-mask">
+        {% if section.settings.description != blank %}
+          <div class="story-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="story-text-mask">
+        {% if section.settings.link_label != blank %}
+          <a href="{{ section.settings.link_url }}" class="story-link">
+            {{ section.settings.link_label }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="story-image-wrapper">
+      <div class="story-image-mask">
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="{{ section.settings.title }}" class="story-image" loading="lazy">
+        {% else %}
+          <img src="{{ 'our-story.png' | asset_url }}" alt="Our Story" class="story-image">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Image Mask Reveal
+    gsap.to(".story-image-mask", {
+      clipPath: "inset(0% 0% 0% 0%)",
+      webkitClipPath: "inset(0% 0% 0% 0%)",
+      duration: 2.5,
+      ease: "power4.inOut",
+      scrollTrigger: {
+        trigger: ".story-section",
+        start: "top 80%",
+      }
+    });
+
+    gsap.to(".story-image", {
+      scale: 1,
+      x: 0,
+      duration: 2.5,
+      ease: "power4.inOut",
+      scrollTrigger: {
+        trigger: ".story-section",
+        start: "top 80%",
+      }
+    });
+
+    // Text Mask Reveal Staggered
+    gsap.fromTo(".story-text-mask", {
+      clipPath: "inset(0% 100% 0% 0%)",
+      webkitClipPath: "inset(0% 100% 0% 0%)",
+      x: -100
+    }, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      webkitClipPath: "inset(0% 0% 0% 0%)",
+      x: 0,
+      duration: 2.0,
+      stagger: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".story-section",
+        start: "top 80%",
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Our Story Section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f7f2"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Rooted in Simplicity, Made with Intention"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Four Moons was born from a love for calm spaces and meaningful moments. Every product is handcrafted using the finest ingredients to bring warmth, balance, and beauty into your home.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "LEARN MORE"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story Section"
+    }
+  ]
+}
+{% endschema %}

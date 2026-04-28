@@ -1,0 +1,215 @@
+<style>
+  .about-philosophy {
+    background-color: #fff;
+    overflow: hidden;
+    padding: 100px 0 100px 80px;
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .about-philosophy-left {
+    flex: 1;
+    max-width: 600px;
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  .about-philosophy-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 25px;
+    display: block;
+    color: #999;
+  }
+
+  .about-philosophy-title {
+    font-family: 'Lora', serif;
+    font-size: 52px;
+    line-height: 1.2;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #1a1a1a;
+  }
+
+  .about-philosophy-divider {
+    width: 60px;
+    height: 1px;
+    background: #c5a880;
+    margin-bottom: 30px;
+  }
+
+  .about-philosophy-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 60px;
+  }
+
+  /* Features Grid */
+  .philosophy-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 30px;
+  }
+
+  .philosophy-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .feature-icon {
+    width: 32px;
+    height: 32px;
+    color: #c5a880;
+  }
+
+  .feature-content h4 {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0 0 10px 0;
+    color: #1a1a1a;
+  }
+
+  .feature-content p {
+    font-size: 11px;
+    line-height: 1.6;
+    color: #888;
+    margin: 0;
+  }
+
+  /* Right Side Image */
+  .about-philosophy-right {
+    flex: 1;
+    height: 700px;
+    position: relative;
+    margin-right: 0;
+    overflow: hidden;
+  }
+
+  .philosophy-image-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 2;
+  }
+
+  .about-philosophy-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 1200px) {
+    .about-philosophy {
+      padding: 80px 0 80px 40px;
+      flex-direction: column;
+      gap: 60px;
+    }
+    .about-philosophy-right {
+      width: 100%;
+      height: 500px;
+    }
+    .about-philosophy-left {
+      padding-right: 40px;
+    }
+  }
+</style>
+
+<section class="about-philosophy" id="philosophySection">
+  <div class="about-philosophy-left" id="philosophyText">
+    <span class="about-philosophy-label">Our Philosophy</span>
+    <h2 class="about-philosophy-title">More than a candle. It's a feeling.</h2>
+    <div class="about-philosophy-divider"></div>
+    <p class="about-philosophy-text">
+      We create candles that do more than smell beautiful. They help you slow down, reconnect, and turn ordinary moments into something meaningful.
+    </p>
+
+    <div class="philosophy-features">
+      <div class="philosophy-feature">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Z"></path><path d="M12 22V12"></path><path d="M12 12 2.2 7.6"></path><path d="M12 12l9.8-4.4"></path></svg>
+        </div>
+        <div class="feature-content">
+          <h4>Clean Ingredients</h4>
+          <p>We use natural waxes, essential oils, and safe fragrance blends.</p>
+        </div>
+      </div>
+      <div class="philosophy-feature">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        </div>
+        <div class="feature-content">
+          <h4>Crafted with Care</h4>
+          <p>Hand poured in small batches to ensure the highest quality.</p>
+        </div>
+      </div>
+      <div class="philosophy-feature">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M2 12h20"></path><path d="m4.93 4.93 14.14 14.14"></path><path d="m4.93 19.07 14.14-14.14"></path></svg>
+        </div>
+        <div class="feature-content">
+          <h4>Made to Last</h4>
+          <p>Long burning, slow release scents that fill your space.</p>
+        </div>
+      </div>
+      <div class="philosophy-feature">
+        <div class="feature-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </div>
+        <div class="feature-content">
+          <h4>Inspired by You</h4>
+          <p>Designed to elevate your everyday rituals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-philosophy-right">
+    <div class="philosophy-image-mask" id="philosophyMask"></div>
+    <img src="{{ 'about-philosophy.png' | asset_url }}" alt="Vanilla Oak Candle">
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const philosophyTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#philosophySection',
+        start: 'top 70%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    // Mask reveal from right to left (mask slides left)
+    philosophyTl.to('#philosophyMask', {
+      xPercent: -100,
+      duration: 1.8,
+      ease: 'power2.inOut'
+    }, 0);
+
+    // Text reveal from left to right
+    philosophyTl.to('#philosophyText', {
+      opacity: 1,
+      x: 0,
+      duration: 1.2,
+      ease: 'power2.out'
+    }, 0.3);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "About Philosophy",
+  "settings": []
+}
+{% endschema %}

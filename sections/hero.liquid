@@ -1,0 +1,209 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  #shopify-section-{{ section.id }} ~ .shopify-section {
+    position: relative;
+    z-index: 2;
+    background-color: #fff; /* Acts as the shutter */
+  }
+  .bespoke-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  .bespoke-hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% {{ section.settings.image_position }}%;
+    display: block;
+    z-index: 1;
+    will-change: transform;
+  }
+  .hero-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20vh 20px 0;
+    box-sizing: border-box;
+    z-index: 5;
+  }
+  .hero-top-content {
+    text-align: center;
+    max-width: 900px;
+    margin-bottom: 24px;
+  }
+  .hero-main-title {
+    font-family: 'Lora', serif;
+    font-size: 72px;
+    font-weight: 400;
+    line-height: 1;
+    color: #1a1a1a;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.03em;
+  }
+  .hero-main-subtitle {
+    font-size: 18px;
+    color: #555;
+    margin: 0 0 32px 0;
+    font-weight: 400;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  .hero-main-cta {
+    display: inline-block;
+    padding: 14px 40px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .hero-main-cta:hover {
+    background-color: #333;
+    color: #fff;
+  }
+  .hero-title-large {
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 110px;
+    font-weight: 900;
+    margin: -60px 0 0 0;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    background: linear-gradient(to bottom, #888 40%, rgba(136,136,136,0) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  .hero-fade-deep {
+    background: linear-gradient(to bottom, #888 40%, rgba(136,136,136,0) 60%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  @media (max-width: 1024px) {
+    .hero-main-title { font-size: 56px; }
+    .hero-title-large { font-size: 80px; }
+    .hero-container { padding-top: 15vh; }
+  }
+  @media (max-width: 600px) {
+    .hero-main-title { font-size: 38px; }
+    .hero-title-large { font-size: 56px; }
+    .hero-container { padding-top: 12vh; }
+  }
+</style>
+
+<section class="bespoke-hero">
+  {% if section.settings.image != blank %}
+    <img src="{{ section.settings.image | image_url: width: 3000 }}" class="bespoke-hero__bg" alt="Hero background">
+  {% else %}
+    <img src="{{ 'hero-bg.png' | asset_url }}" class="bespoke-hero__bg" alt="Hero background">
+  {% endif %}
+
+  <div class="hero-container">
+    <div class="hero-top-content" data-aos="fade-up" data-aos-duration="1500">
+      <h1 class="hero-main-title">{{ section.settings.title }}</h1>
+      <p class="hero-main-subtitle">{{ section.settings.subtitle }}</p>
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_link }}" class="hero-main-cta">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+      </div>
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bespoke Hero Image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "range",
+      "id": "image_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Image Vertical Position",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Aromatic Escapes, Crafted for Your Sanctuary."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover our hand-poured soy candles and bespoke air-purifying diffusers."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bespoke Hero Image"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const heroTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".bespoke-hero",
+        start: "top top",
+        end: "+=100%",
+        scrub: 1
+      }
+    });
+
+    // Cinematic Zoom
+    heroTl.to(".bespoke-hero__bg", {
+      scale: 1.3,
+      ease: "power1.inOut"
+    }, 0);
+
+  });
+</script>

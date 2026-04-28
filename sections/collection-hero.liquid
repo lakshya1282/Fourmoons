@@ -1,0 +1,248 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  #shopify-section-{{ section.id }} ~ .shopify-section {
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+  }
+  .collection-hero {
+    position: relative;
+    height: 80vh;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    z-index: 1;
+  }
+
+  .carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 3;
+  }
+
+  .hero-content-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10%;
+    z-index: 4;
+    text-align: left;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 500px;
+  }
+
+  .hero-subtitle {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    font-family: 'Lora', serif;
+    font-size: 82px;
+    margin: 0 0 10px 0;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 2px;
+    background: #c5a880;
+    margin: 20px 0;
+  }
+
+  .hero-description {
+    font-size: 15px;
+    line-height: 1.8;
+    opacity: 0.8;
+    margin-bottom: 40px;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 30px;
+    background: #dcd6cb;
+    color: #000;
+    text-decoration: none;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+  }
+
+  .hero-cta:hover {
+    background: #fff;
+    gap: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-title { font-size: 64px; }
+  }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 48px; }
+    .hero-content-wrapper { padding: 0 40px; }
+  }
+</style>
+
+<div class="collection-hero" id="collection-hero-{{ section.id }}">
+  <div class="carousel-container">
+    {% for block in section.blocks %}
+      <div class="carousel-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+        {% if block.settings.image != blank %}
+          <img src="{{ block.settings.image | image_url: width: 2000 }}" alt="{{ block.settings.image.alt }}">
+        {% else %}
+          {% capture asset_name %}products-hero-{{ forloop.index }}{% endcapture %}
+          <img src="{{ asset_name | append: '.png' | asset_url }}" alt="Products hero {{ forloop.index }}">
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content-wrapper">
+    <div class="hero-content">
+      <span class="hero-subtitle">{{ section.settings.subtitle | default: "CURATED ESSENTIALS" }}</span>
+      <h1 class="hero-title">{{ section.settings.title | default: "Premium Candles" }}</h1>
+      <div class="hero-divider"></div>
+      <div class="hero-description">
+        {{ collection.description | default: "Handpicked scents, crafted with care and the finest ingredients to elevate your everyday." }}
+      </div>
+      <a href="#collection-main-{{ section.id }}" class="hero-cta">
+        SHOP COLLECTION <span>&rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.getElementById('collection-hero-{{ section.id }}');
+    const slides = section.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+
+    // Carousel Logic
+    if (slides.length > 1) {
+      setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }, 5000);
+    }
+
+    // GSAP Zoom Effect on Scroll
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      
+      gsap.to('.carousel-container img', {
+        scale: 1.2,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Hero Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Premium Candles"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "EXPLORE OUR RANGE"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero Carousel",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

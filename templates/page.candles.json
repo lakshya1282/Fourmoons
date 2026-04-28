@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "main": {
+      "type": "candles-hero",
+      "settings": {}
+    },
+    "values": {
+      "type": "candles-values",
+      "settings": {}
+    },
+    "detail_showcase": {
+      "type": "candle-detail-showcase",
+      "settings": {}
+    },
+    "blueberry_showcase": {
+      "type": "candle-blueberry-showcase",
+      "settings": {}
+    },
+    "hc_showcase": {
+      "type": "candle-hot-chocolate-showcase",
+      "settings": {}
+    },
+    "occasions": {
+      "type": "candles-occasions",
+      "settings": {}
+    },
+    "coffee_showcase": {
+      "type": "candle-coffee-showcase",
+      "settings": {}
+    },
+    "cherry_showcase": {
+      "type": "candle-cherry-showcase",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "values",
+    "detail_showcase",
+    "blueberry_showcase",
+    "hc_showcase",
+    "occasions",
+    "coffee_showcase",
+    "cherry_showcase"
+  ]
+}

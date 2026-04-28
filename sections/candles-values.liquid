@@ -1,0 +1,147 @@
+<style>
+  .candles-values {
+    background-color: #fdfaf5;
+    padding: 80px 40px;
+    border-bottom: 1px solid #efebe5;
+  }
+
+  .values-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .value-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 30px;
+    border-right: 1px solid #efebe5;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .value-box:last-child {
+    border-right: none;
+  }
+
+  .value-box-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    color: #c5a880;
+  }
+
+  .value-box-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .value-box-content h3 {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 8px 0;
+    color: #1a1a1a;
+  }
+
+  .value-box-content p {
+    font-size: 11px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+    max-width: 200px;
+  }
+
+  @media (max-width: 1024px) {
+    .values-container {
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    .value-box {
+      flex: 1 1 45%;
+      border-right: none;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .value-box {
+      flex: 1 1 100%;
+    }
+    .candles-values {
+      padding: 60px 20px;
+    }
+  }
+</style>
+
+<section class="candles-values" id="candlesValuesSection">
+  <div class="values-container">
+    <div class="value-box">
+      <div class="value-box-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Z"></path><path d="M12 22V12"></path><path d="M12 12 2.2 7.6"></path><path d="M12 12l9.8-4.4"></path></svg>
+      </div>
+      <div class="value-box-content">
+        <h3>Clean Ingredients</h3>
+        <p>Made with natural soy wax and premium fragrance oils.</p>
+      </div>
+    </div>
+
+    <div class="value-box">
+      <div class="value-box-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      </div>
+      <div class="value-box-content">
+        <h3>Hand Poured</h3>
+        <p>Carefully crafted in small batches with intention.</p>
+      </div>
+    </div>
+
+    <div class="value-box">
+      <div class="value-box-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+      </div>
+      <div class="value-box-content">
+        <h3>Long Lasting</h3>
+        <p>Slow burning for up to 45-50 hours.</p>
+      </div>
+    </div>
+
+    <div class="value-box">
+      <div class="value-box-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      </div>
+      <div class="value-box-content">
+        <h3>Conscious Choice</h3>
+        <p>Eco-friendly materials and responsible sourcing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    gsap.to('.value-box', {
+      scrollTrigger: {
+        trigger: '#candlesValuesSection',
+        start: 'top 85%'
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'power2.out'
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Candles Values",
+  "settings": []
+}
+{% endschema %}

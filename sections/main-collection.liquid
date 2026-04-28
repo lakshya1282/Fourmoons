@@ -1,0 +1,708 @@
+<style>
+  .collection-main {
+    background-color: #fdfaf5; /* Off-white/beige background */
+    padding: 60px 40px;
+    min-height: 100vh;
+  }
+
+  .collection-layout {
+    display: flex;
+    gap: 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* Sidebar Filters */
+  .collection-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-inner {
+    background: #fff;
+    border: 1px solid #efebe5;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #efebe5;
+  }
+
+  .filter-header h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .clear-all {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .filter-group {
+    padding: 25px;
+    border-bottom: 1px solid #efebe5;
+  }
+
+  .filter-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+
+  .filter-group-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1a1a1a;
+  }
+
+  .filter-toggle {
+    font-size: 18px;
+    font-weight: 300;
+    color: #999;
+  }
+
+  .filter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .filter-item {
+    margin-bottom: 12px;
+  }
+
+  .filter-label {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #4a4a4a;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .filter-label:hover {
+    color: #000;
+  }
+
+  .filter-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #dcdcdc;
+    margin-right: 12px;
+    display: inline-block;
+    position: relative;
+    border-radius: 2px;
+  }
+
+  .filter-item input:checked + .filter-checkbox {
+    background: #000;
+    border-color: #000;
+  }
+
+  .filter-item input:checked + .filter-checkbox::after {
+    content: '✓';
+    color: #fff;
+    font-size: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .filter-count {
+    color: #999;
+    margin-left: 5px;
+  }
+
+  .sidebar-footer-card {
+    background: #f4f1eb;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 4px;
+    text-align: left;
+  }
+
+  .footer-card-icon {
+    margin-bottom: 15px;
+    color: #4a4a4a;
+  }
+
+  .footer-card-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .footer-card-text {
+    font-size: 11px;
+    line-height: 1.6;
+    color: #666;
+  }
+
+  /* Collection Content */
+  .collection-content {
+    flex: 1;
+  }
+
+  .collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .product-count-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .sort-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sort-select-wrapper {
+    position: relative;
+  }
+
+  .sort-select {
+    border: none;
+    background: none;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    padding-right: 20px;
+    outline: none;
+  }
+
+  .view-options {
+    display: flex;
+    gap: 10px;
+    color: #999;
+  }
+
+  .view-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .view-btn.active {
+    color: #000;
+  }
+
+  /* List View Styling */
+  .product-grid.list-view {
+    grid-template-columns: 1fr !important;
+    gap: 40px;
+  }
+
+  .product-grid.list-view .product-card {
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .product-grid.list-view .product-image-container {
+    width: 300px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .product-grid.list-view .product-details {
+    flex: 1;
+    text-align: left;
+  }
+
+  .product-grid.list-view .product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .product-grid.list-view .product-meta {
+    justify-content: flex-start;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .product-grid.list-view .add-to-cart-btn {
+    width: auto;
+    padding: 15px 60px;
+  }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+
+  .product-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-image-container {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    margin-bottom: 15px;
+  }
+
+  .product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .product-card:hover .product-image-container img {
+    transform: scale(1.05);
+  }
+
+  .badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #fff;
+    padding: 5px 12px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    z-index: 2;
+  }
+
+  .badge-best-seller {
+    background: #e6ded3;
+    color: #000;
+  }
+
+  .wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.2s ease;
+  }
+
+  .wishlist-btn:hover {
+    transform: scale(1.2);
+  }
+
+  .product-details {
+    padding: 0 5px;
+  }
+
+  .product-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 5px 0;
+    color: #1a1a1a;
+  }
+
+  .product-scent {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+
+  .product-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .product-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .product-size {
+    font-size: 11px;
+    color: #999;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s ease;
+  }
+
+  .add-to-cart-btn:hover {
+    background: #333;
+  }
+
+  .apply-filters-btn {
+    width: calc(100% - 50px);
+    margin: 0 25px 25px 25px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s ease;
+  }
+
+  .apply-filters-btn:hover {
+    background: #333;
+  }
+
+  @media (max-width: 1400px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .collection-sidebar {
+      display: none;
+    }
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% liquid
+  assign current_collection = section.settings.collection | default: collection
+  assign products_to_show = current_collection.products
+
+  if section.settings.product_list != blank
+    assign products_to_show = section.settings.product_list
+  endif
+%}
+
+<section class="collection-main">
+  <div class="collection-layout">
+    <!-- Sidebar -->
+    {% if section.settings.show_sidebar %}
+    <aside class="collection-sidebar">
+      <div class="sidebar-inner">
+        <div class="filter-header">
+          <h2>FILTERS</h2>
+          <a href="#" class="clear-all">Clear All</a>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <div class="filter-group-header">
+            <span class="filter-group-title">Category</span>
+            <span class="filter-toggle">−</span>
+          </div>
+          <ul class="filter-list">
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="all" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> All</label></li>
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="wax-candles" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Wax Candles</label></li>
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="car-diffusers" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Car Diffusers</label></li>
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="fragrance-candles" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Fragrance Candles</label></li>
+          </ul>
+        </div>
+
+        <!-- Scent Filter -->
+        <div class="filter-group">
+          <div class="filter-group-header">
+            <span class="filter-group-title">Scent</span>
+            <span class="filter-toggle">−</span>
+          </div>
+          <ul class="filter-list">
+            {% assign scents = "Floral (8),Woody (7),Citrus (5),Spicy (4),Fresh (3),Herbal (3)" | split: "," %}
+            {% for scent_data in scents %}
+              {% assign parts = scent_data | split: " (" %}
+              {% assign scent_val = parts[0] | handleize %}
+              <li class="filter-item">
+                <label class="filter-label">
+                  <input type="checkbox" value="{{ scent_val }}" class="filter-input" style="display:none;">
+                  <span class="filter-checkbox"></span>
+                  {{ parts[0] }} <span class="filter-count">({{ parts[1] }}</span>
+                </label>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <button class="apply-filters-btn" id="apply-filters-btn">UPDATE FILTERS</button>
+
+        <div class="sidebar-footer-card">
+          <div class="footer-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+          </div>
+          <span class="footer-card-title">Clean & Conscious</span>
+          <p class="footer-card-text">All our candles are made with natural ingredients, clean fragrances, and eco-friendly materials.</p>
+        </div>
+      </div>
+    </aside>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="collection-content">
+      <div class="collection-toolbar">
+        <div class="product-count-text">
+          {{ products_to_show.size | default: 16 }} Products
+        </div>
+        <div class="toolbar-right">
+          <div class="sort-container">
+            <span>SORT BY:</span>
+            <div class="sort-select-wrapper">
+              <select class="sort-select">
+                <option>Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+          <div class="view-options">
+            <button class="view-btn active" id="grid-view-btn" title="Grid View">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </button>
+            <button class="view-btn" id="list-view-btn" title="List View">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-grid" id="product-grid-main">
+        {% comment %} Render Selected or Collection Products {% endcomment %}
+        {% for product in products_to_show %}
+          <div class="product-card" data-category="wax-candles" data-scent="woody" data-price="{{ product.price | divided_by: 100.0 }}">
+            <div class="product-image-container">
+              {% if forloop.index == 1 or forloop.index == 6 %}
+                <span class="badge">NEW</span>
+              {% elsif forloop.index == 2 %}
+                <span class="badge badge-best-seller">BEST SELLER</span>
+              {% endif %}
+              
+              <button class="wishlist-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              
+              <a href="{{ product.url }}">
+                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}">
+              </a>
+            </div>
+            
+            <div class="product-details">
+              <h3 class="product-title">{{ product.title }}</h3>
+              <p class="product-scent">Sage • Pine • Eucalyptus</p>
+              
+              <div class="product-meta">
+                <span class="product-price">{{ product.price | money }}</span>
+                <span class="product-size">8 oz</span>
+              </div>
+              
+              <form method="post" action="/cart/add">
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                <button type="submit" class="add-to-cart-btn">ADD TO CART</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+
+        {% comment %} Demo Fill-in {% endcomment %}
+        {% if section.settings.show_demo %}
+          {% assign current_count = products_to_show.size %}
+          {% if current_count < 8 %}
+            {% assign needed = 8 | minus: current_count %}
+            {% assign demo_titles = "Woodland Fog,Autumn Spice,Vanilla Oak,Bergamot & Leather,Wild Lavender,Midnight Santal,White Tea & Fig,Sea Salt Citrus" | split: "," %}
+            {% assign demo_scents_list = "Sage • Pine • Eucalyptus,Cinnamon • Clove • Orange,Vanilla • Oak • Amber,Bergamot • Leather • Cedar,Lavender • Chamomile • Musk,Sandalwood • Vetiver • Musk,White Tea • Fig • Jasmine,Sea Salt • Lemon • Mint" | split: "," %}
+            {% assign demo_cats = "wax-candles,fragrance-candles,wax-candles,car-diffusers,fragrance-candles,car-diffusers,wax-candles,fragrance-candles" | split: "," %}
+            {% assign demo_scent_handles = "woody,spicy,woody,woody,floral,woody,herbal,citrus" | split: "," %}
+            {% assign demo_prices = "28.00,32.00,25.00,45.00,22.00,40.00,35.00,20.00" | split: "," %}
+            
+            {% for i in (1..needed) %}
+              {% assign demo_idx = current_count | plus: i | minus: 1 %}
+              <div class="product-card" data-category="{{ demo_cats[demo_idx] }}" data-scent="{{ demo_scent_handles[demo_idx] }}" data-price="{{ demo_prices[demo_idx] }}">
+                <div class="product-image-container">
+                  <img src="{{ 'products-hero-' | append: i | modulo: 3 | plus: 1 | append: '.png' | asset_url }}" alt="{{ demo_titles[demo_idx] }}">
+                </div>
+                
+                <div class="product-details">
+                  <h3 class="product-title">{{ demo_titles[demo_idx] }}</h3>
+                  <p class="product-scent">{{ demo_scents_list[demo_idx] }}</p>
+                  
+                  <div class="product-meta">
+                    <span class="product-price">${{ demo_prices[demo_idx] }}</span>
+                    <span class="product-size">8 oz</span>
+                  </div>
+                  <button type="button" class="add-to-cart-btn">ADD TO CART</button>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection Override",
+      "info": "Choose a specific collection to display. Defaults to current collection."
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Manual Product Selection",
+      "info": "Manually pick products to show. This overrides the collection selection."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show Sidebar Filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_demo",
+      "label": "Show Demo Products",
+      "info": "Fills empty space with placeholder products if inventory is low.",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const gridBtn = document.getElementById('grid-view-btn');
+    const listBtn = document.getElementById('list-view-btn');
+    const grid = document.getElementById('product-grid-main');
+
+    if (gridBtn && listBtn && grid) {
+      gridBtn.addEventListener('click', () => {
+        grid.classList.remove('list-view');
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+      });
+
+      listBtn.addEventListener('click', () => {
+        grid.classList.add('list-view');
+        listBtn.classList.add('active');
+        gridBtn.classList.remove('active');
+      });
+    }
+
+    // Filtering Logic
+    const filterInputs = document.querySelectorAll('.filter-input');
+    const productCards = document.querySelectorAll('.product-card');
+    const clearAllBtn = document.querySelector('.clear-all');
+
+    function filterProducts() {
+      const selectedCategories = Array.from(document.querySelectorAll('.filter-input[value]:checked'))
+        .filter(input => ['wax-candles', 'car-diffusers', 'fragrance-candles'].includes(input.value))
+        .map(input => input.value);
+      
+      const selectedScents = Array.from(document.querySelectorAll('.filter-input[value]:checked'))
+        .filter(input => !['all', 'wax-candles', 'car-diffusers', 'fragrance-candles'].includes(input.value))
+        .map(input => input.value);
+
+      const isAllSelected = document.querySelector('.filter-input[value="all"]:checked');
+
+      productCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const scent = card.getAttribute('data-scent');
+        let show = true;
+
+        if (!isAllSelected) {
+          if (selectedCategories.length > 0 && !selectedCategories.includes(cat)) show = false;
+          if (selectedScents.length > 0 && !selectedScents.includes(scent)) show = false;
+        }
+
+        card.style.display = show ? 'flex' : 'none';
+      });
+    }
+
+    const applyFiltersBtn = document.getElementById('apply-filters-btn');
+    if (applyFiltersBtn) applyFiltersBtn.addEventListener('click', filterProducts);
+
+    // Sorting Logic
+    const sortSelect = document.querySelector('.sort-select');
+    if (sortSelect && grid) {
+      sortSelect.addEventListener('change', (e) => {
+        const sortValue = e.target.value;
+        const cardsArray = Array.from(productCards);
+        if (sortValue === 'Price: Low to High') {
+          cardsArray.sort((a, b) => parseFloat(a.dataset.price || 0) - parseFloat(b.dataset.price || 0));
+        } else if (sortValue === 'Price: High to Low') {
+          cardsArray.sort((a, b) => parseFloat(b.dataset.price || 0) - parseFloat(a.dataset.price || 0));
+        }
+        cardsArray.forEach(card => grid.appendChild(card));
+      });
+    }
+  });
+</script>

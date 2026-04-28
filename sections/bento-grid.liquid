@@ -1,0 +1,344 @@
+<style>
+  .bento-section {
+    padding: 80px 20px;
+    background-color: #fff;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .bento-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .bento-main-title {
+    font-family: 'Lora', serif;
+    font-size: 48px;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+    font-weight: 400;
+  }
+  .bento-main-subtitle {
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+    margin: 0;
+  }
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 300px);
+    gap: 20px;
+    grid-template-areas:
+      "car car wax air"
+      "car car custom custom";
+  }
+  .bento-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+  .bento-item--car { grid-area: car; }
+  .bento-item--wax { grid-area: wax; }
+  .bento-item--air { grid-area: air; }
+  .bento-item--custom { grid-area: custom; }
+
+  .bento-img-wrapper {
+    position: absolute;
+    top: -20%;
+    left: 0;
+    width: 100%;
+    height: 140%;
+    will-change: transform;
+  }
+  .bento-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+  }
+  .bento-item:hover .bento-img {
+    transform: scale(1.1);
+  }
+
+  .bento-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    color: #fff;
+    transition: all 0.4s ease;
+  }
+  .bento-item:hover .bento-overlay {
+    background: rgba(0,0,0,0.5);
+  }
+
+  .bento-title {
+    font-family: 'Lora', serif;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 400;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+  }
+  .bento-details {
+    font-size: 14px;
+    margin-top: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    line-height: 1.5;
+  }
+  .bento-item:hover .bento-details {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .bento-item:hover .bento-title {
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto;
+      grid-template-areas:
+        "car car"
+        "wax air"
+        "custom custom";
+    }
+    .bento-item { height: 300px; }
+    .bento-item--car { height: 400px; }
+  }
+  @media (max-width: 600px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "car"
+        "wax"
+        "air"
+        "custom";
+    }
+  }
+</style>
+
+<section class="bento-section">
+  <div class="bento-header" data-aos="fade-up">
+    {% if section.settings.main_subtitle != blank %}
+      <span class="bento-main-subtitle">{{ section.settings.main_subtitle }}</span>
+    {% endif %}
+    {% if section.settings.main_title != blank %}
+      <h2 class="bento-main-title">{{ section.settings.main_title }}</h2>
+    {% endif %}
+  </div>
+
+  <div class="bento-grid">
+    <!-- Car Diffusers -->
+    <div class="bento-item bento-item--car" data-aos="fade-up">
+      <div class="bento-img-wrapper" data-parallax="0.15">
+        {% if section.settings.car_image != blank %}
+          <img src="{{ section.settings.car_image | image_url: width: 1000 }}" class="bento-img" alt="Car Diffusers">
+        {% else %}
+          <img src="{{ 'car_fresheners_collection_image_1777280939143.png' | asset_url }}" class="bento-img" alt="Car Diffusers">
+        {% endif %}
+      </div>
+      <div class="bento-overlay">
+        <h3 class="bento-title">Car Diffusers</h3>
+        <div class="bento-details">
+          Premium fragrances for your journey. Long-lasting, elegant, and refreshing scents for every drive.
+        </div>
+      </div>
+    </div>
+
+    <!-- Wax Candles -->
+    <div class="bento-item bento-item--wax" data-aos="fade-up" data-aos-delay="100">
+      <div class="bento-img-wrapper" data-parallax="0.1">
+        {% if section.settings.wax_image != blank %}
+          <img src="{{ section.settings.wax_image | image_url: width: 800 }}" class="bento-img" alt="Wax Candles">
+        {% else %}
+          <img src="{{ 'wax_candles_collection_image_1777280956586.png' | asset_url }}" class="bento-img" alt="Wax Candles">
+        {% endif %}
+      </div>
+      <div class="bento-overlay">
+        <h3 class="bento-title">Wax Candles</h3>
+        <div class="bento-details">
+          Hand-poured soy wax candles with intricate aromas to soothe your soul.
+        </div>
+      </div>
+    </div>
+
+    <!-- Air Fresheners -->
+    <div class="bento-item bento-item--air" data-aos="fade-up" data-aos-delay="200">
+      <div class="bento-img-wrapper" data-parallax="0.2">
+        {% if section.settings.air_image != blank %}
+          <img src="{{ section.settings.air_image | image_url: width: 800 }}" class="bento-img" alt="Air Fresheners">
+        {% else %}
+          <img src="{{ 'air_fresheners_collection_image_1777280974510.png' | asset_url }}" class="bento-img" alt="Air Fresheners">
+        {% endif %}
+      </div>
+      <div class="bento-overlay">
+        <h3 class="bento-title">Air Fresheners</h3>
+        <div class="bento-details">
+          Instant freshness for any room. Natural sprays that purify and elevate your space.
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Candles -->
+    <div class="bento-item bento-item--custom" data-aos="fade-up" data-aos-delay="300">
+      <div class="bento-img-wrapper" data-parallax="0.1">
+        {% if section.settings.custom_image != blank %}
+          <img src="{{ section.settings.custom_image | image_url: width: 1200 }}" class="bento-img" alt="Custom Candles">
+        {% else %}
+          <img src="{{ 'candles_collection_image_1777280990902.png' | asset_url }}" class="bento-img" alt="Custom Candles">
+        {% endif %}
+      </div>
+      <div class="bento-overlay">
+        <h3 class="bento-title">Custom Candles</h3>
+        <div class="bento-details">
+          Personalized scents and vessels tailored to your unique preferences and special occasions.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bentoItems = document.querySelectorAll('.bento-item');
+
+    // Parallax Effect for Bento Images
+    const parallaxImages = document.querySelectorAll('[data-parallax]');
+    parallaxImages.forEach(img => {
+      gsap.fromTo(img, {
+        yPercent: -20
+      }, {
+        yPercent: 20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: img.parentElement,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    });
+
+    // 3D Tilt Hover Animation
+    bentoItems.forEach(item => {
+      const title = item.querySelector('.bento-title');
+      const details = item.querySelector('.bento-details');
+      const img = item.querySelector('.bento-img');
+      
+      item.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = item.getBoundingClientRect();
+        const x = (e.clientX - left) / width - 0.5;
+        const y = (e.clientY - top) / height - 0.5;
+        
+        gsap.to(item, {
+          rotateY: x * 8, 
+          rotateX: -y * 8,
+          transformPerspective: 1000,
+          scale: 1.02,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+
+        if (img) {
+          gsap.to(img, {
+            x: x * 15,
+            y: y * 15,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        }
+
+        if (title) {
+          gsap.to(title, {
+            x: x * 10,
+            y: y * 10,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        }
+      });
+      
+      item.addEventListener('mouseleave', () => {
+        gsap.to(item, {
+          rotateY: 0,
+          rotateX: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out"
+        });
+
+        if (img) {
+          gsap.to(img, {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out"
+          });
+        }
+
+        if (title) {
+          gsap.to(title, {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out"
+          });
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Bento Grid Categories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_subtitle",
+      "label": "Section Subtitle",
+      "default": "DISCOVER"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Section Title",
+      "default": "Our Crafted Collections"
+    },
+    {
+      "type": "image_picker",
+      "id": "car_image",
+      "label": "Car Diffusers Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "wax_image",
+      "label": "Wax Candles Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "air_image",
+      "label": "Air Fresheners Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom Candles Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bento Grid Categories"
+    }
+  ]
+}
+{% endschema %}

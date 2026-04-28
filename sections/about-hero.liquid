@@ -1,0 +1,135 @@
+<style>
+  .about-hero {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background-color: #1a1a1a; /* Fallback for white text */
+  }
+
+  .about-hero-image-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .about-hero-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .about-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 80px;
+    width: 100%;
+    color: #fff; /* Default to white text if image is dark */
+  }
+
+  .about-hero-inner {
+    max-width: 550px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .about-hero-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 30px;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .about-hero-title {
+    font-family: 'Lora', serif;
+    font-size: 64px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 40px;
+  }
+
+  .about-hero-divider {
+    width: 80px;
+    height: 1px;
+    background: #c5a880; /* Gold divider */
+    margin-bottom: 40px;
+  }
+
+  .about-hero-subtitle {
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 480px;
+  }
+
+  @media (max-width: 1024px) {
+    .about-hero {
+      height: 70vh;
+    }
+    .about-hero-content {
+      padding: 0 40px;
+    }
+    .about-hero-title {
+      font-size: 48px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      height: 60vh;
+      align-items: flex-end;
+      padding-bottom: 60px;
+    }
+    .about-hero-title {
+      font-size: 36px;
+    }
+  }
+</style>
+
+<section class="about-hero">
+  <div class="about-hero-image-wrap">
+    <img src="{{ 'about-hero-bg.png' | asset_url }}" alt="Our Story">
+  </div>
+  
+  <div class="about-hero-content">
+    <div class="about-hero-inner" id="aboutHeroInner">
+      <span class="about-hero-label">Our Story</span>
+      <h1 class="about-hero-title">Thoughtfully crafted. Made to be remembered.</h1>
+      <div class="about-hero-divider"></div>
+      <p class="about-hero-subtitle">
+        WeCare was born from a simple belief—everyday moments deserve to feel special. Our candles are handcrafted with care, using the finest ingredients and timeless scents to bring warmth, comfort, and calm to your space.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Subtle entrance animation
+    gsap.to('#aboutHeroInner', {
+      opacity: 1,
+      y: 0,
+      duration: 1.5,
+      ease: 'power3.out',
+      delay: 0.5
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "About Hero",
+  "settings": []
+}
+{% endschema %}
