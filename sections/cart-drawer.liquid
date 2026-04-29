@@ -291,11 +291,16 @@
       // Intercept add to cart forms
       document.addEventListener('submit', (e) => {
         if (e.target.action && e.target.action.includes('/cart/add')) {
+          // If the submitter is the checkout button, let it through
+          if (e.submitter && e.submitter.name === 'checkout') {
+            return;
+          }
+          
           e.preventDefault();
           e.stopPropagation();
           this.addToCart(e.target);
         }
-      }, true); // Use capture phase to intercept before parent listeners
+      }, true); 
     }
 
     async addToCart(form) {

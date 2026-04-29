@@ -1,38 +1,670 @@
-<div class="product-page" style="padding: 120px 40px; max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
-  <div class="product-media">
-    {% if product.featured_image %}
-      <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title }}" style="width: 100%;">
-    {% else %}
-      {{ 'product-1' | placeholder_svg_tag: 'product-placeholder' }}
-    {% endif %}
-  </div>
+<style>
+  :root {
+    --color-purple: #4B436D;
+    --color-beige: #F8F6F2;
+    --color-text-dark: #1A1A1A;
+    --color-text-light: #666666;
+    --color-border: #EEEEEE;
+  }
 
-  <div class="product-info" style="padding-top: 40px;">
-    <h1 style="font-family: serif; font-size: 52px; margin: 0 0 10px 0; font-weight: 400; color: #000;">{{ product.title | default: "Example Product Title" }}</h1>
-    <p style="font-size: 24px; color: #333; margin-bottom: 40px;">{{ product.price | money | default: "$45.00" }}</p>
+  .product-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    font-family: 'Inter', sans-serif;
+  }
 
-    <div class="product-description" style="line-height: 1.8; color: #555; margin-bottom: 40px;">
-      {{ product.description | default: "This is a handcrafted premium candle made with the finest natural ingredients. Perfect for creating a calm and beautiful atmosphere in your home." }}
+  /* Breadcrumbs */
+  .breadcrumbs {
+    font-size: 13px;
+    color: var(--color-text-light);
+    margin-bottom: 40px;
+  }
+  .breadcrumbs a { color: inherit; text-decoration: none; }
+  .breadcrumbs span { margin: 0 10px; }
+
+  /* Hero Section */
+  .product-hero {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 100px;
+  }
+
+  /* Gallery */
+  .product-thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .thumb-item {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .thumb-item.active { border-color: var(--color-purple); }
+  .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+
+  .product-main-media {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f9f9f9;
+  }
+  .product-main-media img { width: 100%; height: auto; display: block; }
+  .zoom-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Info */
+  .product-info-wrap {
+    padding-left: 20px;
+  }
+  .best-seller-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #D7C4F2;
+    color: var(--color-purple);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 100px;
+    margin-bottom: 15px;
+  }
+  .product-title {
+    font-family: 'Lora', serif;
+    font-size: 42px;
+    color: var(--color-text-dark);
+    margin: 0 0 15px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: var(--color-text-light);
+  }
+  .stars { color: #FFB800; font-size: 18px; }
+
+  .product-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+  }
+  .tax-note { font-size: 13px; color: var(--color-text-light); margin-bottom: 30px; }
+
+  .catch-phrase { font-weight: 700; color: var(--color-text-dark); margin-bottom: 10px; display: block; }
+  .short-desc { font-size: 15px; color: var(--color-text-light); line-height: 1.6; margin-bottom: 35px; }
+
+  /* Options */
+  .option-label { font-size: 13px; font-weight: 700; margin-bottom: 12px; display: block; }
+  .size-pills { display: flex; gap: 10px; margin-bottom: 30px; }
+  .size-pill {
+    padding: 10px 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .size-pill.active { background: var(--color-purple); color: #fff; border-color: var(--color-purple); }
+
+  .qty-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .qty-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .qty-input { width: 40px; text-align: center; border: none; font-size: 14px; outline: none; }
+
+  .button-group { display: flex; gap: 15px; margin-bottom: 40px; }
+  .btn-add-to-cart {
+    flex: 1;
+    background: var(--color-purple);
+    color: #fff;
+    border: none;
+    padding: 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-buy-now {
+    flex: 1;
+    background: transparent;
+    color: var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+    padding: 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Trust Badges */
+  .trust-badges {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+  }
+  .trust-item { text-align: center; font-size: 11px; color: var(--color-text-light); line-height: 1.3; }
+  .trust-item svg { width: 24px; height: 24px; margin-bottom: 8px; color: var(--color-purple); }
+
+  /* Scent Notes Section */
+  .scent-notes-section {
+    background: var(--color-beige);
+    border-radius: 20px;
+    padding: 60px 80px;
+    margin-bottom: 100px;
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .notes-intro h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 20px; font-weight: 400; }
+  .notes-intro p { font-size: 15px; color: var(--color-text-light); line-height: 1.8; }
+  .notes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .note-card { background: #fff; padding: 30px 20px; border-radius: 12px; text-align: center; }
+  .note-card svg { width: 32px; height: 32px; margin-bottom: 15px; color: var(--color-purple); }
+  .note-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-light); margin-bottom: 10px; display: block; }
+  .note-name { font-size: 14px; font-weight: 700; color: var(--color-text-dark); line-height: 1.4; }
+
+  /* Why You'll Love It */
+  .benefits-section { margin-bottom: 120px; text-align: center; }
+  .benefits-section h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 50px; font-weight: 400; }
+  .benefits-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+  .benefit-card { background: #F9F9F9; padding: 30px 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; }
+  .benefit-card svg { width: 30px; height: 30px; margin-bottom: 15px; color: var(--color-purple); }
+  .benefit-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .benefit-desc { font-size: 11px; color: var(--color-text-light); line-height: 1.4; }
+
+  /* Ritual Banner */
+  .ritual-banner {
+    background: #6D5E53 url('https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=2000') no-repeat center;
+    background-size: cover;
+    border-radius: 20px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 100px;
+    margin-bottom: 100px;
+    position: relative;
+    color: #fff;
+  }
+  .ritual-banner::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); border-radius: 20px; }
+  .ritual-content { position: relative; z-index: 1; text-align: right; }
+  .ritual-content h2 { font-family: 'Lora', serif; font-size: 36px; margin-bottom: 20px; font-weight: 400; }
+  .ritual-btn { background: #fff; color: var(--color-text-dark); padding: 12px 30px; border-radius: 100px; text-decoration: none; font-size: 13px; font-weight: 600; }
+
+  /* Lower Layout */
+  .lower-layout { display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 60px; margin-bottom: 120px; }
+  
+  /* Accordion */
+  .accordion-item { border-bottom: 1px solid var(--color-border); }
+  .accordion-title { padding: 18px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 14px; font-weight: 700; }
+  .accordion-content { padding-bottom: 20px; font-size: 14px; color: var(--color-text-light); line-height: 1.6; display: none; }
+  .accordion-item.active .accordion-content { display: block; }
+  .accordion-item.active svg { transform: rotate(180deg); }
+
+  /* How to Use */
+  .how-to-use h3 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 30px; font-weight: 400; text-align: center; }
+  .steps { display: flex; flex-direction: column; gap: 30px; }
+  .step-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .step-icon { width: 50px; height: 50px; background: var(--color-beige); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: var(--color-purple); }
+  .step-num { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+  .step-text { font-size: 12px; color: var(--color-text-light); line-height: 1.5; }
+
+  /* Reviews */
+  .reviews-summary h3 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 20px; font-weight: 400; }
+  .rating-flex { display: flex; align-items: baseline; gap: 15px; margin-bottom: 25px; }
+  .rating-big { font-size: 48px; font-weight: 600; }
+  .rating-sub { font-size: 13px; color: var(--color-text-light); }
+  
+  .rating-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+  .bar-item { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .bar-track { flex: 1; height: 6px; background: #EEE; border-radius: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--color-purple); border-radius: 10px; }
+
+  .review-snippet { background: #fff; border: 1px solid var(--color-border); padding: 25px; border-radius: 12px; position: relative; }
+  .review-quote { font-size: 13px; color: var(--color-text-light); font-style: italic; margin-bottom: 15px; display: block; }
+  .review-author { font-size: 12px; font-weight: 700; }
+  .review-nav { display: flex; gap: 10px; margin-top: 20px; }
+  .nav-dot { width: 6px; height: 6px; background: #DDD; border-radius: 50%; cursor: pointer; }
+  .nav-dot.active { background: var(--color-purple); }
+
+  /* You May Also Like */
+  .cross-sell-section { margin-bottom: 120px; }
+  .cross-sell-section h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 40px; font-weight: 400; }
+  .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+  .product-item { border-radius: 12px; overflow: hidden; background: #fff; }
+  .product-img { aspect-ratio: 1; overflow: hidden; position: relative; }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; }
+  .product-footer { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+  .p-name { font-size: 14px; font-weight: 600; }
+  .p-price { font-size: 13px; color: var(--color-text-light); margin-top: 4px; }
+  .btn-cart-small { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+  /* Newsletter Box */
+  .newsletter-box {
+    background: var(--color-beige);
+    border-radius: 20px;
+    padding: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+  }
+  .news-text h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 10px; }
+  .news-text p { font-size: 14px; color: var(--color-text-light); }
+  .news-form { display: flex; gap: 10px; flex: 1; max-width: 500px; }
+  .news-form input { flex: 1; padding: 15px 20px; border-radius: 8px; border: 1px solid var(--color-border); font-size: 14px; }
+  .news-form button { background: var(--color-purple); color: #fff; padding: 15px 30px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+  .no-spam { font-size: 12px; color: #888; margin-top: 15px; display: block; }
+
+  @media (max-width: 1024px) {
+    .product-hero { grid-template-columns: 1fr; }
+    .product-thumbnails { order: 2; flex-direction: row; }
+    .product-main-media { order: 1; }
+    .product-info-wrap { order: 3; padding: 0; }
+    .scent-notes-section, .lower-layout { grid-template-columns: 1fr; gap: 40px; }
+    .benefits-grid { grid-template-columns: repeat(3, 1fr); }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .newsletter-box { flex-direction: column; text-align: center; }
+  }
+</style>
+
+<div class="product-container" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}">
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumbs">
+    <a href="/">Home</a> <span>/</span> <a href="/collections/all">Shop</a> <span>/</span> {{ product.title }}
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="product-hero">
+    <div class="product-thumbnails">
+      {% for image in product.images %}
+        <div class="thumb-item {% if forloop.first %}active{% endif %}" data-image="{{ image | image_url: width: 1000 }}">
+          <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt }}">
+        </div>
+      {% endfor %}
     </div>
 
-    <form method="post" action="/cart/add" id="AddToCartForm">
-      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+    <div class="product-main-media">
+      <img id="MainProductImage" src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title }}">
+      <div class="zoom-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+    </div>
+
+    <div class="product-info-wrap">
+      <span class="best-seller-tag">Best Seller</span>
+      <h1 class="product-title">{{ product.title }}</h1>
       
-      <div class="product-qty" style="margin-bottom: 20px;">
-        <label for="quantity" style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;">Quantity</label>
-        <input type="number" id="quantity" name="quantity" value="1" min="1" style="padding: 12px; width: 80px; border: 1px solid #ddd;">
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span>4.8 (124 reviews)</span>
       </div>
 
-      <button type="submit" style="width: 100%; max-width: 400px; padding: 20px; background: #000; color: #fff; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; transition: background 0.3s ease;">
-        Add to Bag
-      </button>
-    </form>
+      <p class="product-price">{{ product.price | money }}</p>
+      <p class="tax-note">Inclusive of all taxes</p>
+
+      <span class="catch-phrase">Sweet Serenity in Every Flicker 🫐 🕯️</span>
+      <p class="short-desc">
+        A delightful blend of juicy, fruity blueberry and soft, creamy vanilla that's both uplifting and calming.
+      </p>
+
+      <form method="post" action="/cart/add" id="AddToCartForm">
+        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+
+        <div class="qty-selector">
+          <span class="option-label" style="margin: 0;">Quantity</span>
+          <div class="qty-controls">
+            <button type="button" class="qty-btn minus">-</button>
+            <input type="number" name="quantity" value="1" min="1" class="qty-input">
+            <button type="button" class="qty-btn plus">+</button>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn-add-to-cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            Add to Cart
+          </button>
+          <button type="submit" name="checkout" class="btn-buy-now">Buy Now</button>
+        </div>
+      </form>
+
+      <div class="trust-badges">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.42 4.58a5 5 0 0 1 0 7.07l-7.07 7.07a1 1 0 0 1-1.41 0L4.87 11.65a5 5 0 0 1 7.07-7.07l.36.36.36-.36a5 5 0 0 1 7.76 0Z"/></svg>
+          Hand-poured with love
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6Z"></path></svg>
+          100% Natural Soy Wax
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          Non-toxic Fragrance
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M2 12h20M12 2a10 10 0 0 1 10 10M12 22a10 10 0 0 1-10-10"/></svg>
+          Clean Burn & Safe
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scent Notes -->
+  <div class="scent-notes-section">
+    <div class="notes-intro">
+      <h2>A Moment of Calm, Poured into Every Jar</h2>
+      <p>Imagine walking into a sun-drenched kitchen where fresh blueberries simmer alongside warm vanilla. That's exactly the feeling our Blueberry Vanilla Fragrance Candle brings to your space.</p>
+    </div>
+    <div class="notes-grid">
+      <div class="note-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span class="note-type">Top Notes</span>
+        <span class="note-name">Fresh Blueberry Burst</span>
+      </div>
+      <div class="note-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+        <span class="note-type">Heart Notes</span>
+        <span class="note-name">Creamy Vanilla Blend</span>
+      </div>
+      <div class="note-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <span class="note-type">Base Notes</span>
+        <span class="note-name">Soft Warm Musk</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Benefits -->
+  <div class="benefits-section">
+    <h2>Why You'll Love It</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="benefit-title">20+ Hours</span>
+        <span class="benefit-desc">Long-lasting burn time</span>
+      </div>
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6h-2c0-2.67-.67-4.67-2-6-1.33 1.33-2 3.33-2 6Z"></path></svg>
+        <span class="benefit-title">Natural Soy Wax</span>
+        <span class="benefit-desc">Eco-friendly & sustainable</span>
+      </div>
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.42 4.58a5 5 0 0 1 0 7.07l-7.07 7.07a1 1 0 0 1-1.41 0L4.87 11.65a5 5 0 0 1 7.07-7.07l.36.36.36-.36a5 5 0 0 1 7.76 0Z"/></svg>
+        <span class="benefit-title">Stress Relief</span>
+        <span class="benefit-desc">Calming aroma for relaxation</span>
+      </div>
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span class="benefit-title">Enhances Ambiance</span>
+        <span class="benefit-desc">Creates a cozy atmosphere</span>
+      </div>
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+        <span class="benefit-title">Perfect Gift</span>
+        <span class="benefit-desc">Beautifully packaged</span>
+      </div>
+      <div class="benefit-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+        <span class="benefit-title">Clean & Safe</span>
+        <span class="benefit-desc">Non-toxic & paraben-free</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ritual Banner -->
+  <div class="ritual-banner">
+    <div class="ritual-content">
+      <h2>Transform Everyday<br>Moments into Rituals</h2>
+      <a href="/collections/all" class="ritual-btn">Explore More Scents</a>
+    </div>
+  </div>
+
+  <!-- Lower Layout -->
+  <div class="lower-layout">
+    <div class="product-details-accordion">
+      <h3>Product Details</h3>
+      <div class="accordion-item active">
+        <div class="accordion-title">
+          Description
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content">
+          Our Blueberry Vanilla Candle is crafted with premium soy wax and infused with the perfect balance of fruity blueberries and creamy vanilla. It fills your space with a sweet, calming aroma that lingers beautifully.
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-title">
+          Ingredients
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content">Natural Soy Wax, Phthalate-free Fragrance Oils, Cotton Wick.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-title">
+          Burn Instructions
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content">Trim wick to 1/4" before each use.</div>
+      </div>
+    </div>
+
+    <div class="how-to-use">
+      <h3>How to Use</h3>
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13.5l6.5-6.5a4.95 4.95 0 017 0 4.95 4.95 0 010 7L10 20.5a4.95 4.95 0 01-7 0z"/></svg>
+          </div>
+          <span class="step-num">1</span>
+          <span class="step-text">Trim the wick to 1/4 inch before lighting.</span>
+        </div>
+        <div class="step-item">
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+          <span class="step-num">2</span>
+          <span class="step-text">Let the wax melt evenly to the edges on the first burn.</span>
+        </div>
+        <div class="step-item">
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10M18 9l-6 6-6-6"/></svg>
+          </div>
+          <span class="step-num">3</span>
+          <span class="step-text">Enjoy up to 20+ hours of soothing fragrance.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-summary">
+      <h3>Customer Reviews</h3>
+      <div class="rating-flex">
+        <span class="rating-big">4.8</span>
+        <div class="rating-sub">
+          <div class="stars" style="font-size: 14px;">★★★★★</div>
+          <span>Based on 124 reviews</span>
+        </div>
+      </div>
+      <div class="rating-bars">
+        <div class="bar-item"><span>5 ★</span> <div class="bar-track"><div class="bar-fill" style="width: 87%;"></div></div> <span>87%</span></div>
+        <div class="bar-item"><span>4 ★</span> <div class="bar-track"><div class="bar-fill" style="width: 10%;"></div></div> <span>10%</span></div>
+        <div class="bar-item"><span>3 ★</span> <div class="bar-track"><div class="bar-fill" style="width: 2%;"></div></div> <span>2%</span></div>
+        <div class="bar-item"><span>2 ★</span> <div class="bar-track"><div class="bar-fill" style="width: 1%;"></div></div> <span>1%</span></div>
+      </div>
+      <div class="review-snippet">
+        <div class="stars" style="font-size: 12px; margin-bottom: 10px;">★★★★★</div>
+        <span class="review-quote">"The scent is absolutely divine! My room smells like a cozy blueberry vanilla dream."</span>
+        <span class="review-author">— Priya S.</span>
+        <div class="review-nav">
+          <span class="nav-dot active"></span>
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cross Sell -->
+  <div class="cross-sell-section">
+    <h2>You May Also Like</h2>
+    <div class="product-grid">
+      <div class="product-item">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1602872030219-0ef6d4b9152a?auto=format&fit=crop&q=80&w=600" alt="Lavender Calm">
+        </div>
+        <div class="product-footer">
+          <div>
+            <div class="p-name">Lavender Calm</div>
+            <div class="p-price">Rs. 200.00</div>
+          </div>
+          <div class="btn-cart-small">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=600" alt="Citrus Burst">
+        </div>
+        <div class="product-footer">
+          <div>
+            <div class="p-name">Citrus Burst</div>
+            <div class="p-price">Rs. 200.00</div>
+          </div>
+          <div class="btn-cart-small">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1596433809252-260c2745dfdd?auto=format&fit=crop&q=80&w=600" alt="Rose Musk">
+        </div>
+        <div class="product-footer">
+          <div>
+            <div class="p-name">Rose Musk</div>
+            <div class="p-price">Rs. 200.00</div>
+          </div>
+          <div class="btn-cart-small">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-img">
+          <img src="https://images.unsplash.com/photo-1572726710708-20bb9712e753?auto=format&fit=crop&q=80&w=600" alt="Sandalwood Glow">
+        </div>
+        <div class="product-footer">
+          <div>
+            <div class="p-name">Sandalwood Glow</div>
+            <div class="p-price">Rs. 200.00</div>
+          </div>
+          <div class="btn-cart-small">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="newsletter-box">
+    <div class="news-text">
+      <h2>Get 10% Off Your First Order</h2>
+      <p>Join our newsletter and be the first to know about<br>new arrivals, exclusive offers, and more.</p>
+    </div>
+    <div class="news-form-wrap">
+      <div class="news-form">
+        <input type="email" placeholder="Enter your email">
+        <button type="button">Subscribe</button>
+      </div>
+      <span class="no-spam">No spam, unsubscribe anytime.</span>
+    </div>
   </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('#ProductSection-{{ section.id }}');
+    if (!section) return;
+
+    // Thumbnail Switch
+    const thumbs = section.querySelectorAll('.thumb-item');
+    const mainImg = section.querySelector('#MainProductImage');
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        thumbs.forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+        mainImg.src = thumb.getAttribute('data-image');
+      });
+    });
+
+    // Quantity
+    const qtyInput = section.querySelector('.qty-input');
+    const plus = section.querySelector('.plus');
+    const minus = section.querySelector('.minus');
+    plus.addEventListener('click', () => { qtyInput.value = parseInt(qtyInput.value) + 1; });
+    minus.addEventListener('click', () => { if(qtyInput.value > 1) qtyInput.value = parseInt(qtyInput.value) - 1; });
+
+    // Accordion
+    const accordions = section.querySelectorAll('.accordion-title');
+    accordions.forEach(acc => {
+      acc.addEventListener('click', () => {
+        const item = acc.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+  });
+</script>
+
 {% schema %}
 {
-  "name": "Product Details",
+  "name": "Product Details Redesign",
   "settings": []
 }
 {% endschema %}

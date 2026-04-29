@@ -14,14 +14,15 @@
     margin-bottom: 80px;
   }
   .footer-logo {
-    font-size: 28px;
-    font-family: 'Lora', serif;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 25px;
     display: block;
+    margin-bottom: 25px;
     text-decoration: none;
-    color: #000;
+  }
+  .footer-logo img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0); /* Ensure logo is black if it's not already, matching the footer text color */
   }
   .footer-description {
     font-size: 14px;
@@ -102,7 +103,9 @@
 <footer class="site-footer">
   <div class="footer-container">
     <div class="footer-brand">
-      <a href="/" class="footer-logo">{{ shop.name }}</a>
+      <a href="/" class="footer-logo">
+        <img src="{{ 'Fourmoons.png' | asset_url }}" alt="Fourmoons Logo" width="auto" height="50">
+      </a>
       <p class="footer-description">Handcrafted scents for a beautiful, balanced life.</p>
     </div>
 

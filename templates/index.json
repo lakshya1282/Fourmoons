@@ -46,6 +46,10 @@
       "type": "newsletter",
       "settings": {}
     },
+    "chat_testimonials": {
+      "type": "chat-testimonials",
+      "settings": {}
+    },
     "instagram_testimonials": {
       "type": "instagram-testimonials",
       "settings": {
@@ -110,6 +114,7 @@
     "our_story",
     "process_reveal",
     "best_sellers",
+    "chat_testimonials",
     "collection_list",
     "instagram_testimonials",
     "newsletter"
