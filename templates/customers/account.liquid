@@ -1,13 +1,12 @@
 <div class="account-page" style="padding: 120px 40px; max-width: 1200px; margin: 0 auto;">
   <h1 style="font-family: serif; font-size: 42px; margin-bottom: 20px;">My Account</h1>
-  <a href="/account/logout" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #888; text-decoration: none;">Logout</a>
+  <a href="{{ routes.account_logout_url }}" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #888; text-decoration: none;">Logout</a>
 
   <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 80px; margin-top: 60px;">
     <div>
       <h2 style="font-size: 24px; margin-bottom: 30px;">Order History</h2>
       {% if customer.orders.size > 0 %}
         {% for order in customer.orders %}
-          <!-- Order summary -->
         {% endfor %}
       {% else %}
         <p style="color: #888;">You haven't placed any orders yet.</p>

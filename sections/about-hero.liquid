@@ -2,11 +2,11 @@
   .about-hero {
     position: relative;
     width: 100%;
-    height: 90vh;
+    height: 100vh;
     overflow: hidden;
     display: flex;
     align-items: center;
-    background-color: #1a1a1a; /* Fallback for white text */
+    background-color: #fff;
   }
 
   .about-hero-image-wrap {
@@ -30,93 +30,163 @@
     z-index: 2;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 80px;
+    padding: 100px 80px 0;
     width: 100%;
-    color: #fff; /* Default to white text if image is dark */
+    color: #1a1a1a;
   }
 
   .about-hero-inner {
-    max-width: 550px;
+    max-width: 500px;
     opacity: 0;
     transform: translateY(30px);
   }
 
-  .about-hero-label {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    margin-bottom: 30px;
-    display: block;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
   .about-hero-title {
     font-family: 'Lora', serif;
-    font-size: 64px;
+    font-size: 52px;
     line-height: 1.1;
     font-weight: 400;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
   }
 
-  .about-hero-divider {
-    width: 80px;
-    height: 1px;
-    background: #c5a880; /* Gold divider */
-    margin-bottom: 40px;
+  .about-hero-title span {
+    font-style: italic;
   }
 
   .about-hero-subtitle {
-    font-size: 16px;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 480px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+
+  .about-hero-features {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    width: fit-content;
+  }
+
+  .feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .feature-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+  }
+
+  .feature-text {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1a1a1a;
+    line-height: 1.4;
+    max-width: 80px;
   }
 
   @media (max-width: 1024px) {
-    .about-hero {
-      height: 70vh;
-    }
     .about-hero-content {
       padding: 0 40px;
     }
     .about-hero-title {
-      font-size: 48px;
+      font-size: 52px;
     }
   }
 
   @media (max-width: 768px) {
     .about-hero {
-      height: 60vh;
-      align-items: flex-end;
-      padding-bottom: 60px;
+      height: auto;
+      min-height: 100vh;
+      padding: 120px 0 60px;
+      flex-direction: column;
+      text-align: center;
+    }
+    .about-hero-image-wrap {
+      position: relative;
+      width: 100%;
+      height: 450px;
+      margin-bottom: 40px;
+      order: 1;
+    }
+    .about-hero-content {
+      padding: 0 20px;
+      order: 2;
+    }
+    .about-hero-inner {
+      max-width: 100%;
+      margin: 0 auto;
     }
     .about-hero-title {
-      font-size: 36px;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .about-hero-subtitle {
+      font-size: 13px;
+      max-width: 100%;
+      margin-bottom: 30px;
+    }
+    .about-hero-features {
+      gap: 15px;
+      justify-content: center;
+      margin: 30px auto 0;
+      padding-top: 25px;
     }
   }
 </style>
 
 <section class="about-hero">
   <div class="about-hero-image-wrap">
-    <img src="{{ 'about-hero-bg.png' | asset_url }}" alt="Our Story">
+    <img src="{{ 'abt.png' | asset_url }}" alt="Fourmoons Fragrances">
   </div>
-  
+
   <div class="about-hero-content">
     <div class="about-hero-inner" id="aboutHeroInner">
-      <span class="about-hero-label">Our Story</span>
-      <h1 class="about-hero-title">Thoughtfully crafted. Made to be remembered.</h1>
-      <div class="about-hero-divider"></div>
+      <h1 class="about-hero-title">Fragrances that <span>stay with you.</span></h1>
       <p class="about-hero-subtitle">
-        WeCare was born from a simple belief—everyday moments deserve to feel special. Our candles are handcrafted with care, using the finest ingredients and timeless scents to bring warmth, comfort, and calm to your space.
+        Handpoured candles & car diffusers crafted for every moment.
       </p>
+
+      <div class="about-hero-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="feature-text">Premium Ingredients</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10M18 9l-6 6-6-6"/></svg>
+          </div>
+          <span class="feature-text">Handpoured with care</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polyline points="16 8 20 8 23 11 23 16 16 16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <span class="feature-text">Long-lasting Fragrance</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Subtle entrance animation
     gsap.to('#aboutHeroInner', {
       opacity: 1,
       y: 0,

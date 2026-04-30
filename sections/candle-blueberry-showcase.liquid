@@ -1,6 +1,6 @@
 <style>
   .blueberry-showcase {
-    background-color: #ffffff; /* White (Alternate) */
+    background-color: #ffffff;
     padding: 120px 0;
     overflow: hidden;
     color: #1a1a1a;
@@ -121,7 +121,7 @@
     margin-bottom: 40px;
   }
 
-  /* Sizes */
+
   .candle-sizes-label {
     font-size: 9px;
     font-weight: 800;
@@ -174,7 +174,7 @@
   .size-box:hover::before {
     transform: translateY(0);
   }
-  
+
   .size-box:hover {
     border-color: #d1bfae;
   }
@@ -185,7 +185,7 @@
     color: #1a1a1a;
   }
 
-  /* Recommendations */
+
   .recommendations-label {
     font-size: 9px;
     font-weight: 800;
@@ -402,8 +402,6 @@
       stagger: 0.1,
       ease: 'power3.out'
     }, 0.5);
-
-    // Inverse Parallax Effect
     gsap.to('#blueberryImage img', {
       scrollTrigger: {
         trigger: '#blueberryShowcase',

@@ -49,7 +49,7 @@
     position: relative;
   }
 
-  /* Message Blob */
+
   .note-blob {
     background: #ffffff;
     border: 1px solid #000000;
@@ -105,7 +105,7 @@
     z-index: 2;
   }
 
-  /* Profile Ring Animation */
+
   .profile-container {
     width: 100px;
     height: 100px;
@@ -132,7 +132,7 @@
     stroke: url(#instaGradient);
     stroke-width: 3;
     stroke-linecap: round;
-    /* Circumference for r=48 is ~301.6 */
+
     stroke-dasharray: 302;
     stroke-dashoffset: 302;
   }
@@ -223,7 +223,6 @@
 </style>
 
 <section class="insta-testimonials">
-  <!-- Hidden SVG for gradient definition -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
       <linearGradient id="instaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -249,7 +248,7 @@
             {{ block.settings.text }}
           </div>
         </div>
-        
+
         <div class="profile-container">
           <svg viewBox="0 0 100 100" class="ring-svg">
             <circle cx="50" cy="50" r="48" class="ring-circle" />
@@ -262,12 +261,10 @@
             {% endif %}
           </div>
         </div>
-        
+
         <p class="customer-name">{{ block.settings.name }}</p>
       </div>
     {% endfor %}
-
-    <!-- "And more" placeholder block if needed -->
     {% if section.settings.show_and_more %}
       <div class="testimonial-item">
         <div class="note-blob" style="border-style: dashed; border-color: #ccc; opacity: 0.6;">
@@ -298,7 +295,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Animate the rings on scroll
     gsap.to('.insta-testimonials .ring-circle', {
       strokeDashoffset: 0,
       duration: 2,

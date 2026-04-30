@@ -92,7 +92,7 @@
     z-index: 1;
     letter-spacing: -0.02em;
   }
-  
+
   .candle-showcase-subtitle {
     font-family: 'Lora', serif;
     font-style: italic;
@@ -172,7 +172,7 @@
   .size-box:hover::before {
     transform: translateY(0);
   }
-  
+
   .size-box:hover {
     border-color: #d1bfae;
   }
@@ -236,7 +236,7 @@
     letter-spacing: 0.1em;
     transition: color 0.3s ease;
   }
-  
+
   .rec-item:hover .rec-title {
     color: #1a1a1a;
   }
@@ -324,7 +324,7 @@
       <p class="candle-showcase-text">
         A comforting, warm aroma that blends crisp red apples with spicy cinnamon and a smooth, lingering base of sweet musk. Perfect for creating an inviting, nostalgic atmosphere in any living space.
       </p>
-      
+
       <div class="content-divider"></div>
 
       <span class="candle-sizes-label">Select Your Vessel</span>
@@ -377,15 +377,11 @@
         toggleActions: 'play none none none'
       }
     });
-
-    // Image Reveal
     showcaseTl.to('#appleCinnamonImage', {
       clipPath: 'inset(0 0 0% 0)',
       duration: 1.8,
       ease: 'power3.inOut'
     }, 0);
-
-    // Content Container Reveal
     showcaseTl.to('#appleCinnamonContent', {
       opacity: 1,
       duration: 1.2,
@@ -400,8 +396,6 @@
         }, 5000);
       }
     }, 0.2);
-    
-    // Staggered text elements reveal
     showcaseTl.from('#appleCinnamonContent .editorial-number, #appleCinnamonContent .candle-showcase-title, #appleCinnamonContent .candle-showcase-subtitle, #appleCinnamonContent .candle-showcase-text, #appleCinnamonContent .content-divider, #appleCinnamonContent .candle-sizes-label, #appleCinnamonContent .candle-sizes, #appleCinnamonContent .recommendations-label, #appleCinnamonContent .recommendations-grid, #appleCinnamonContent .shop-btn', {
       y: 30,
       opacity: 0,
@@ -409,8 +403,6 @@
       stagger: 0.1,
       ease: 'power3.out'
     }, 0.5);
-
-    // Inverse Parallax Effect
     gsap.to('#appleCinnamonImage img', {
       scrollTrigger: {
         trigger: '#appleCinnamonShowcase',

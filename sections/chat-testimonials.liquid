@@ -49,7 +49,7 @@
     margin-right: auto;
   }
 
-  /* Filters */
+
   .chat-filters {
     display: flex;
     justify-content: center;
@@ -86,7 +86,7 @@
     stroke-width: 1.5;
   }
 
-  /* Carousel */
+
   .chat-carousel-outer {
     position: relative;
     max-width: 1500px;
@@ -108,7 +108,7 @@
     display: none;
   }
 
-  /* Chat Card */
+
   .chat-card {
     flex: 0 0 350px;
     background: #fff;
@@ -126,7 +126,7 @@
     transform: translateY(-5px);
   }
 
-  /* Card Header */
+
   .chat-card-header {
     padding: 15px 20px;
     display: flex;
@@ -170,7 +170,7 @@
     color: #333;
   }
 
-  /* Card Body */
+
   .chat-card-body {
     flex: 1;
     padding: 20px;
@@ -227,7 +227,7 @@
     margin-top: 5px;
   }
 
-  /* Card Footer (Mock Input) */
+
   .chat-card-footer {
     padding: 15px 20px;
     border-top: 1px solid #f5f5f5;
@@ -260,7 +260,7 @@
     gap: 10px;
   }
 
-  /* Nav Arrows */
+
   .carousel-nav {
     position: absolute;
     top: 50%;
@@ -288,7 +288,7 @@
   .carousel-nav.prev { left: 10px; }
   .carousel-nav.next { right: 10px; }
 
-  /* Section Footer */
+
   .chat-footer {
     text-align: center;
     margin-top: 60px;
@@ -401,11 +401,11 @@
 
           <div class="chat-card-body">
             <div class="chat-timestamp">{{ block.settings.timestamp }}</div>
-            
+
             {% if block.settings.msg_received_1 != blank %}
               <div class="msg-bubble received">{{ block.settings.msg_received_1 }}</div>
             {% endif %}
-            
+
             {% if block.settings.msg_received_2 != blank %}
               <div class="msg-bubble received">{{ block.settings.msg_received_2 }}</div>
             {% endif %}
@@ -458,8 +458,6 @@
     const next = section.querySelector('.carousel-nav.next');
     const filterBtns = section.querySelectorAll('.chat-filter-btn');
     const cards = section.querySelectorAll('.chat-card');
-
-    // Horizontal Scroll
     if (prev && next && inner) {
       next.addEventListener('click', () => {
         inner.scrollLeft += 380;
@@ -468,17 +466,11 @@
         inner.scrollLeft -= 380;
       });
     }
-
-    // Filtering
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const filter = btn.getAttribute('data-filter');
-        
-        // Update active state
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Filter cards
         cards.forEach(card => {
           if (filter === 'all' || card.getAttribute('data-category') === filter) {
             card.style.display = 'flex';

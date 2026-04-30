@@ -1,44 +1,560 @@
-<div class="cart-page" style="padding: 120px 40px; max-width: 1200px; margin: 0 auto;">
-  <h1 style="font-family: serif; font-size: 42px; margin-bottom: 40px;">Your Cart</h1>
+{%- style -%}
+  .cart-page-wrapper {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: var(--font-body-family);
+    color: #1a1a1a;
+  }
+
+  .cart-header {
+    margin-bottom: 40px;
+  }
+
+  .cart-title {
+    font-family: var(--font-heading-family);
+    font-size: 48px;
+    font-weight: 400;
+    margin: 0 0 10px 0;
+  }
+
+  .cart-count-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    align-items: start;
+  }
+
+
+  .cart-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cart-item-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    gap: 24px;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .cart-item-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+
+  .cart-item-image {
+    width: 160px;
+    height: 160px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f9f9f9;
+  }
+
+  .cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cart-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .cart-item-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    color: #1a1a1a;
+    text-decoration: none;
+    line-height: 1.4;
+    max-width: 80%;
+  }
+
+  .cart-item-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #666;
+  }
+
+  .stars {
+    color: #000;
+    display: flex;
+  }
+
+  .cart-item-variant {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .variant-change-btn {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .variant-change-btn:hover {
+    background: #f5f5f5;
+  }
+
+  .cart-item-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cart-item-price {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .quantity-stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .quantity-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    transition: background 0.2s;
+  }
+
+  .quantity-btn:hover {
+    background: #f5f5f5;
+  }
+
+  .quantity-input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 0;
+  }
+
+  .cart-item-total-price {
+    font-weight: 600;
+    font-size: 16px;
+    text-align: right;
+  }
+
+  .remove-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #ff4d4d;
+    font-size: 13px;
+    text-decoration: none;
+    margin-top: 8px;
+    justify-content: flex-end;
+    transition: opacity 0.2s;
+  }
+
+  .remove-btn:hover {
+    opacity: 0.7;
+  }
+
+
+
+  .trust-badges {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .trust-badge-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    border-radius: 50%;
+  }
+
+  .trust-badge-text h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .trust-badge-text p {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: #888;
+  }
+
+
+  .cart-sidebar {
+    position: sticky;
+    top: 100px;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+  }
+
+  .summary-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: #666;
+  }
+
+  .summary-row.total {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #f0f0f0;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.3s;
+  }
+
+  .checkout-btn:hover {
+    background: #333;
+  }
+
+  .secure-checkout-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #888;
+    margin-top: 16px;
+  }
+
+  .delivery-info {
+    margin-top: 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .delivery-text h5 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .delivery-text p {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .payment-icon {
+    height: 24px;
+    opacity: 0.8;
+  }
+
+
+  .cart-help {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .cart-help a {
+    color: #1a1a1a;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1024px) {
+    .cart-layout {
+      grid-template-columns: 1fr;
+    }
+    .cart-sidebar {
+      position: static;
+    }
+    .trust-badges {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cart-item-card {
+      flex-direction: column;
+    }
+    .cart-item-image {
+      width: 100%;
+      height: 200px;
+    }
+    .cart-title {
+      font-size: 32px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="cart-page-wrapper">
+  <div class="cart-header">
+    <h1 class="cart-title">Your Cart</h1>
+    <div class="cart-count-info">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }} in your cart</span>
+    </div>
+  </div>
 
   {% if cart.item_count > 0 %}
-    <form action="/cart" method="post" novalidate>
-      <div class="cart-items">
-        {% for item in cart.items %}
-          <div class="cart-item" style="display: flex; gap: 30px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 30px;">
-            <div class="item-image" style="width: 150px;">
-              <img src="{{ item.image | image_url: width: 300 }}" alt="{{ item.product.title }}" style="width: 100%;">
-            </div>
-            <div class="item-details" style="flex: 1;">
-              <h3 style="margin: 0; font-size: 18px;">{{ item.product.title }}</h3>
-              <p style="color: #888;">{{ item.variant.title }}</p>
-              <p style="font-weight: 600;">{{ item.price | money }}</p>
-              <div class="qty" style="margin-top: 15px;">
-                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" style="padding: 8px; width: 60px;">
+    <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form">
+      <div class="cart-layout">
+        <div class="cart-main">
+          <div class="cart-items-container">
+            {% for item in cart.items %}
+              <div class="cart-item-card" data-key="{{ item.key }}">
+                <div class="cart-item-image">
+                  <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.product.title }}" loading="lazy">
+                </div>
+
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-header">
+                      <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+                    </div>
+
+                    <div class="cart-item-rating">
+                      <div class="stars">
+                        {% for i in (1..5) %}
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        {% endfor %}
+                      </div>
+                      <span>4.5 (32 reviews)</span>
+                    </div>
+
+                    <div class="cart-item-variant">
+                      <span>Size: {{ item.variant.title }}</span>
+                      <button type="button" class="variant-change-btn">Change</button>
+                    </div>
+                  </div>
+
+                  <div class="cart-item-price-row">
+                    <div class="quantity-stepper">
+                      <button type="button" class="quantity-btn" onclick="updateQty('{{ item.key }}', {{ item.quantity | minus: 1 }})">−</button>
+                      <input type="text" class="quantity-input" value="{{ item.quantity }}" readonly>
+                      <button type="button" class="quantity-btn" onclick="updateQty('{{ item.key }}', {{ item.quantity | plus: 1 }})">+</button>
+                    </div>
+
+                    <div class="item-actions">
+                      <div class="cart-item-total-price">{{ item.final_line_price | money }}</div>
+                      <a href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity=0" class="remove-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                        Remove
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <div class="trust-badge-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 11 11 13 15 9"/></svg>
+              </div>
+              <div class="trust-badge-text">
+                <h5>Secure Checkout</h5>
+                <p>100% protected payments</p>
               </div>
             </div>
-            <div class="item-total">
-              <p style="font-weight: 600;">{{ item.final_line_price | money }}</p>
-              <a href="/cart/change?line={{ forloop.index }}&quantity=0" style="font-size: 12px; color: #cc0000; text-decoration: none;">Remove</a>
+            <div class="trust-badge">
+              <div class="trust-badge-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polyline points="16 8 20 8 23 11 23 16 16 16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+              <div class="trust-badge-text">
+                <h5>Fast Delivery</h5>
+                <p>3-5 business days</p>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </div>
+              <div class="trust-badge-text">
+                <h5>Easy Returns</h5>
+                <p>7-day return policy</p>
+              </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
+        </div>
+        <div class="cart-sidebar">
+          <h2 class="summary-title">Order Summary</h2>
 
-      <div class="cart-summary" style="text-align: right; margin-top: 50px;">
-        <h3 style="font-size: 24px;">Subtotal: {{ cart.total_price | money }}</h3>
-        <p style="color: #888; margin-bottom: 30px;">Taxes and shipping calculated at checkout</p>
-        <button type="submit" name="update" style="padding: 15px 30px; background: #eee; border: none; cursor: pointer; margin-right: 15px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Update Cart</button>
-        <button type="submit" name="checkout" style="padding: 15px 60px; background: #000; color: #fff; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Check Out</button>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (Included)</span>
+            <span>Rs. 0.00</span>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+
+          <button type="submit" name="checkout" class="checkout-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            PROCEED TO CHECKOUT
+          </button>
+
+          <div class="secure-checkout-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secure 2-step checkout
+          </div>
+
+          <div class="delivery-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polyline points="16 8 20 8 23 11 23 16 16 16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <div class="delivery-text">
+              <h5>Estimated Delivery</h5>
+              <p>3-5 business days</p>
+            </div>
+          </div>
+
+          <div class="payment-icons">
+            <img src="https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/visa-419b3ccd8462ef5866efbc8335520e5c.svg" alt="Visa" class="payment-icon">
+            <img src="https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/master-623f958864704383a54d5d95d13a9686.svg" alt="Mastercard" class="payment-icon">
+            <img src="https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/american_express-12858714bcce052311d2d74427953951.svg" alt="AMEX" class="payment-icon">
+            <img src="https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/apple_pay-9831969a239b9e6f2f98642277d7f763.svg" alt="Apple Pay" class="payment-icon">
+          </div>
+        </div>
       </div>
     </form>
   {% else %}
     <div style="text-align: center; padding: 100px 0;">
-      <p style="font-size: 18px; margin-bottom: 30px;">Your cart is currently empty.</p>
-      <a href="/collections/all" style="padding: 15px 40px; background: #000; color: #fff; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Continue Shopping</a>
+      <p style="font-size: 18px; margin-bottom: 30px; font-family: var(--font-heading-family);">Your cart is currently empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="checkout-btn" style="width: auto; display: inline-flex; padding: 18px 40px;">Continue Shopping</a>
     </div>
   {% endif %}
+
+  <div class="cart-help">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Need help? <a href="/pages/contact">Contact us</a>
+  </div>
 </div>
+
+<script>
+  function updateQty(key, newQty) {
+    if (newQty < 0) return;
+
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: key,
+        quantity: newQty
+      })
+    })
+    .then(response => response.json())
+    .then(cart => {
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+    });
+  }
+</script>
 
 {% schema %}
 {

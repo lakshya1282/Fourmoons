@@ -159,7 +159,7 @@
     width: 20px;
     height: 20px;
   }
-  
+
   .carousel-dots {
     display: flex;
     justify-content: center;
@@ -204,7 +204,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
-    
+
     <div class="best-sellers-wrapper">
       <div class="best-sellers-grid">
         {% assign collection = collections[section.settings.collection] %}
@@ -222,7 +222,7 @@
                 <h3 class="best-seller-name">{{ product.title }}</h3>
                 <p class="best-seller-type">{{ product.type }}</p>
                 <p class="best-seller-price">{{ product.price | money }}</p>
-                <form method="post" action="/cart/add">
+                <form method="post" action="{{ routes.cart_add_url }}">
                   <input type="hidden" name="id" value="{{ product.variants.first.id }}">
                   <button type="submit" class="best-seller-add-to-cart">Add to Cart</button>
                 </form>
@@ -230,8 +230,7 @@
             </div>
           {% endfor %}
         {% else %}
-          {% comment %} Placeholder Products with generated images {% endcomment %}
-          {% for i in (1..8) %}
+                    {% for i in (1..8) %}
             <div class="best-seller-card">
               <div class="best-seller-image-wrapper">
                 <span class="bestseller-badge">Bestseller</span>
@@ -273,14 +272,12 @@
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     const dotsContainer = document.querySelector('.carousel-dots');
-    
+
     let currentIndex = 0;
     const cardWidth = cards[0].offsetWidth + 30; // card + gap
     const totalItems = cards.length;
     const visibleItems = window.innerWidth > 1024 ? 4 : (window.innerWidth > 600 ? 2 : 1);
     const maxIndex = totalItems - visibleItems;
-
-    // Create dots
     for (let i = 0; i <= maxIndex; i++) {
       const dot = document.createElement('div');
       dot.classList.add('dot');
@@ -316,8 +313,6 @@
       currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
       goToIndex(currentIndex);
     });
-
-    // Auto Scroll
     let autoPlay = setInterval(() => {
       currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
       updateCarousel();
@@ -330,8 +325,6 @@
         updateCarousel();
       }, 5000);
     });
-
-    // Resize handling
     window.addEventListener('resize', () => {
       const newCardWidth = cards[0].offsetWidth + 30;
       gsap.set(grid, { x: -currentIndex * newCardWidth });

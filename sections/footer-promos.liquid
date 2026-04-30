@@ -4,7 +4,7 @@
     padding: 60px 40px;
   }
 
-  /* Values Bar */
+
   .values-bar {
     max-width: 1400px;
     margin: 0 auto 60px auto;
@@ -59,7 +59,7 @@
     margin: 0;
   }
 
-  /* Newsletter Section */
+
   .newsletter-promo {
     max-width: 1400px;
     margin: 0 auto;
@@ -123,6 +123,24 @@
     background: #333;
   }
 
+  @media (max-width: 768px) {
+    .newsletter-form {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .newsletter-input {
+      border-right: 1px solid #dcdcdc;
+      padding: 12px 20px;
+    }
+    .newsletter-submit {
+      padding: 12px;
+      font-size: 10px;
+    }
+    .newsletter-content h2 {
+      font-size: 28px;
+    }
+  }
+
   .newsletter-image {
     width: 40%;
     height: 350px;
@@ -166,7 +184,6 @@
 </style>
 
 <section class="footer-promos">
-  <!-- Values Bar -->
   {% if section.blocks.size > 0 %}
     <div class="values-bar">
       {% for block in section.blocks %}
@@ -186,25 +203,23 @@
       {% endfor %}
     </div>
   {% endif %}
-
-  <!-- Newsletter -->
   <div class="newsletter-promo">
     <div class="newsletter-content">
       <h2>{{ section.settings.newsletter_title }}</h2>
       <p>{{ section.settings.newsletter_text }}</p>
-      
+
       {% if section.settings.newsletter_app == 'shopify' %}
         {% form 'customer', class: 'newsletter-form' %}
           <input type="hidden" name="contact[tags]" value="newsletter">
-          <input type="email" 
-            name="contact[email]" 
-            class="newsletter-input" 
-            placeholder="{{ 'newsletter.label' | t | default: 'Your email address' }}" 
+          <input type="email"
+            name="contact[email]"
+            class="newsletter-input"
+            placeholder="Your email address"
             required>
           <button type="submit" class="newsletter-submit">
-            {{ 'newsletter.button_label' | t | default: 'Subscribe' }}
+            Subscribe
           </button>
-          
+
           {% if form.posted_successfully? %}
             <p class="newsletter-success" style="margin-top: 15px; color: #4CAF50; font-size: 13px;">
               {{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}

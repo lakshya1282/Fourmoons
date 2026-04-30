@@ -48,7 +48,7 @@
     margin-bottom: 60px;
   }
 
-  /* Features Grid */
+
   .philosophy-features {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -83,7 +83,7 @@
     margin: 0;
   }
 
-  /* Right Side Image */
+
   .about-philosophy-right {
     flex: 1;
     height: 700px;
@@ -111,7 +111,7 @@
 
   @media (max-width: 1200px) {
     .about-philosophy {
-      padding: 80px 0 80px 40px;
+      padding: 80px 40px;
       flex-direction: column;
       gap: 60px;
     }
@@ -120,7 +120,28 @@
       height: 500px;
     }
     .about-philosophy-left {
-      padding-right: 40px;
+      padding-right: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-philosophy {
+      padding: 60px 20px;
+      gap: 40px;
+    }
+    .about-philosophy-title {
+      font-size: 36px;
+    }
+    .about-philosophy-text {
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+    .philosophy-features {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .about-philosophy-right {
+      height: 350px;
     }
   }
 </style>
@@ -189,15 +210,11 @@
         toggleActions: 'play none none none'
       }
     });
-
-    // Mask reveal from right to left (mask slides left)
     philosophyTl.to('#philosophyMask', {
       xPercent: -100,
       duration: 1.8,
       ease: 'power2.inOut'
     }, 0);
-
-    // Text reveal from left to right
     philosophyTl.to('#philosophyText', {
       opacity: 1,
       x: 0,

@@ -102,7 +102,7 @@
 
 <section class="collection-list-section">
   <h2 class="collection-list-title">Shop by Collection</h2>
-  
+
   <div class="collection-grid">
     {% for block in section.blocks %}
       <a href="{{ block.settings.collection.url }}" class="collection-card" data-aos="fade-up">
@@ -120,8 +120,7 @@
         </div>
       </a>
     {% else %}
-      {% comment %} Placeholder Collections {% endcomment %}
-      {% liquid
+            {% liquid
         assign col_titles = "Car Fresheners,Wax Candles,Air Fresheners,Candles" | split: ","
         assign col_images = "car_fresheners_collection_image_1777280939143.png,wax_candles_collection_image_1777280956586.png,air_fresheners_collection_image_1777280974510.png,candles_collection_image_1777280990902.png" | split: ","
       %}

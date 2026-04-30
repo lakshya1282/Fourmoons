@@ -241,7 +241,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
   </div>
-  
+
   <div id="cart-drawer-items" class="cart-drawer-items">
     <div class="cart-drawer-loading">Loading your cart...</div>
   </div>
@@ -266,12 +266,11 @@
       this.itemsContainer = document.getElementById('cart-drawer-items');
       this.subtotalElement = document.getElementById('cart-drawer-subtotal');
       this.triggers = document.querySelectorAll('a[href="/cart"], .cart-drawer-trigger');
-      
+
       this.init();
     }
 
     init() {
-      // Toggle drawer
       this.triggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
           e.preventDefault();
@@ -281,26 +280,19 @@
 
       this.closeBtn.addEventListener('click', () => this.close());
       this.overlay.addEventListener('click', () => this.close());
-
-      // Initial fetch
       this.refresh();
-
-      // Listen for cart changes (custom event)
       document.addEventListener('cart:updated', () => this.refresh());
-
-      // Intercept add to cart forms
       document.addEventListener('submit', (e) => {
         if (e.target.action && e.target.action.includes('/cart/add')) {
-          // If the submitter is the checkout button, let it through
           if (e.submitter && e.submitter.name === 'checkout') {
             return;
           }
-          
+
           e.preventDefault();
           e.stopPropagation();
           this.addToCart(e.target);
         }
-      }, true); 
+      }, true);
     }
 
     async addToCart(form) {
@@ -346,7 +338,7 @@
         this.itemsContainer.innerHTML = `
           <div class="cart-drawer-empty">
             <p>Your cart is empty</p>
-            <a href="/collections/all" class="cart-drawer-checkout-btn" style="background: transparent; border: 1px solid #000; color: #000;">Shop Now</a>
+            <a href="{{ routes.all_products_collection_url }}" class="cart-drawer-checkout-btn" style="background: transparent; border: 1px solid #000; color: #000;">Shop Now</a>
           </div>
         `;
         this.subtotalElement.textContent = Shopify.formatMoney(0, this.moneyFormat);
@@ -381,8 +373,6 @@
 
       this.itemsContainer.innerHTML = html;
       this.subtotalElement.textContent = Shopify.formatMoney(cart.total_price, this.moneyFormat);
-
-      // Add event listeners to buttons
       this.itemsContainer.querySelectorAll('.cart-drawer-quantity-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const id = e.currentTarget.dataset.id;
@@ -426,8 +416,6 @@
       }
     }
   }
-
-  // Shopify.formatMoney fallback if not defined
   if (typeof Shopify === 'undefined') {
     var Shopify = {};
   }
@@ -476,8 +464,6 @@
       return formatString.replace(placeholderRegex, value);
     };
   }
-
-  // Initialize on DOM content loaded
   document.addEventListener('DOMContentLoaded', () => {
     window.cartDrawer = new CartDrawer();
   });

@@ -1,0 +1,182 @@
+<style>
+  .diffuser-occasions {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #1a1a1a;
+  }
+
+  .diffuser-occasions-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .diffuser-occasion-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diffuser-occasion-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: brightness(0.7);
+  }
+
+  .diffuser-occasion-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    z-index: 5;
+    width: 100%;
+    padding: 0 40px;
+  }
+
+  .diffuser-occasion-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .diffuser-occasion-title {
+    font-family: 'Lora', serif;
+    font-size: 64px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .diffuser-occasion-slide.active .diffuser-occasion-label,
+  .diffuser-occasion-slide.active .diffuser-occasion-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0.5s;
+  }
+
+  .diffuser-occasions-nav {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 10;
+  }
+
+  .diffuser-occasion-dot {
+    width: 50px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .diffuser-occasion-dot.active {
+    background: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .diffuser-occasion-title {
+      font-size: 38px;
+    }
+  }
+</style>
+
+<section class="diffuser-occasions" id="diffuserOccasionsSection">
+  <div class="diffuser-occasions-slider" id="diffuserOccasionsSlider">
+    <div class="diffuser-occasion-slide active" data-index="0">
+      <img src="{{ 'diffuser-occasion-1.jpg' | asset_url }}" alt="Diffuser Occasion 1">
+      <div class="diffuser-occasion-content">
+        <span class="diffuser-occasion-label">Sensory Experience</span>
+        <h2 class="diffuser-occasion-title">Moments of Clarity</h2>
+      </div>
+    </div>
+    <div class="diffuser-occasion-slide" data-index="1">
+      <img src="{{ 'diffuser-occasion-2.jpg' | asset_url }}" alt="Diffuser Occasion 2">
+      <div class="diffuser-occasion-content">
+        <span class="diffuser-occasion-label">Sensory Experience</span>
+        <h2 class="diffuser-occasion-title">A Journey of Scent</h2>
+      </div>
+    </div>
+    <div class="diffuser-occasion-slide" data-index="2">
+      <img src="{{ 'diffuser-occasion-3.jpg' | asset_url }}" alt="Diffuser Occasion 3">
+      <div class="diffuser-occasion-content">
+        <span class="diffuser-occasion-label">Sensory Experience</span>
+        <h2 class="diffuser-occasion-title">Elegance in Motion</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="diffuser-occasions-nav">
+    <div class="diffuser-occasion-dot active" data-index="0"></div>
+    <div class="diffuser-occasion-dot" data-index="1"></div>
+    <div class="diffuser-occasion-dot" data-index="2"></div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('diffuserOccasionsSlider');
+    const dots = document.querySelectorAll('.diffuser-occasion-dot');
+    const slides = document.querySelectorAll('.diffuser-occasion-slide');
+    let current = 0;
+    const total = slides.length;
+
+    function goToSlide(index) {
+      current = index;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function autoSlide() {
+      let next = (current + 1) % total;
+      goToSlide(next);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        clearInterval(diffuserOccasionInterval);
+        goToSlide(parseInt(dot.dataset.index));
+        diffuserOccasionInterval = setInterval(autoSlide, 5000);
+      });
+    });
+
+    let diffuserOccasionInterval = setInterval(autoSlide, 5000);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Diffuser Occasions",
+  "settings": []
+}
+{% endschema %}

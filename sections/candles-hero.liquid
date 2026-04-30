@@ -40,7 +40,7 @@
     transform: scale(1);
   }
 
-  /* Overlay to ensure text readability */
+
   .hero-overlay {
     position: absolute;
     top: 0;
@@ -100,7 +100,7 @@
     max-width: 480px;
   }
 
-  /* Navigation Dots */
+
   .hero-nav {
     position: absolute;
     bottom: 40px;
@@ -163,7 +163,7 @@
   </div>
 
   <div class="hero-overlay"></div>
-  
+
   <div class="candles-hero-content">
     <div class="candles-hero-inner" id="candlesHeroInner">
       <span class="candles-hero-label">Our Candles</span>
@@ -183,7 +183,10 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Initial entrance for text
+    const header = document.querySelector('.site-header');
+    if (header) {
+      header.classList.add('header-light');
+    }
     gsap.to('#candlesHeroInner', {
       opacity: 1,
       y: 0,
@@ -200,8 +203,6 @@
     function goToSlide(index) {
       currentSlide = index;
       slidesContainer.style.transform = `translateX(-${index * 100}%)`;
-      
-      // Update dots
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === index);
       });
@@ -211,8 +212,6 @@
       let next = (currentSlide + 1) % totalSlides;
       goToSlide(next);
     }
-
-    // Dots click
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
         clearInterval(slideInterval);

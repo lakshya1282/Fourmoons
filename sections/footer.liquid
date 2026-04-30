@@ -22,7 +22,7 @@
     height: 50px;
     width: auto;
     object-fit: contain;
-    filter: brightness(0); /* Ensure logo is black if it's not already, matching the footer text color */
+    filter: brightness(0);
   }
   .footer-description {
     font-size: 14px;
@@ -103,7 +103,7 @@
 <footer class="site-footer">
   <div class="footer-container">
     <div class="footer-brand">
-      <a href="/" class="footer-logo">
+      <a href="{{ routes.root_url }}" class="footer-logo">
         <img src="{{ 'Fourmoons.png' | asset_url }}" alt="Fourmoons Logo" width="auto" height="50">
       </a>
       <p class="footer-description">Handcrafted scents for a beautiful, balanced life.</p>
@@ -112,7 +112,7 @@
     <div class="footer-col">
       <h4 class="footer-heading">Shop</h4>
       <ul class="footer-links">
-        <li class="footer-link-item"><a href="/collections/all" class="footer-link">All Products</a></li>
+        <li class="footer-link-item"><a href="{{ routes.all_products_collection_url }}" class="footer-link">All Products</a></li>
         <li class="footer-link-item"><a href="/collections/candles" class="footer-link">Candles</a></li>
         <li class="footer-link-item"><a href="/collections/diffusers" class="footer-link">Diffusers</a></li>
         <li class="footer-link-item"><a href="/collections/room-sprays" class="footer-link">Room Sprays</a></li>

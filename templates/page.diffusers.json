@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "hero": {
+      "type": "diffusers-hero",
+      "settings": {}
+    },
+    "product_1": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "01",
+        "title": "Amber Oud",
+        "subtitle": "FRAGRANCE NO. 01 — DEEP MYSTERY",
+        "text": "A rich, woody blend of golden amber and smoky oud, balanced with subtle floral notes for a truly sophisticated car atmosphere.",
+        "image_filename": "diffuser-1.jpg",
+        "reverse_layout": false
+      }
+    },
+    "product_2": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "02",
+        "title": "Wild Lavender",
+        "subtitle": "FRAGRANCE NO. 02 — CALMING BREEZE",
+        "text": "Escape the stress of the road with the soothing scent of French lavender fields, blended with fresh eucalyptus and mint.",
+        "image_filename": "diffuser-2.jpg",
+        "reverse_layout": true
+      }
+    },
+    "product_3": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "03",
+        "title": "Sandalwood Silk",
+        "subtitle": "FRAGRANCE NO. 03 — SMOOTH ELEGANCE",
+        "text": "Warm sandalwood meets creamy vanilla and white musk, creating a luxurious and welcoming environment for every drive.",
+        "image_filename": "diffuser-3.jpg",
+        "reverse_layout": false
+      }
+    },
+    "occasions": {
+      "type": "diffuser-occasions",
+      "settings": {}
+    },
+    "product_4": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "04",
+        "title": "Ocean Drift",
+        "subtitle": "FRAGRANCE NO. 04 — COASTAL FREEDOM",
+        "text": "Bracing sea salt and ozone notes combined with sun-drenched driftwood and a hint of citrus for a refreshing, open-road feeling.",
+        "image_filename": "diffuser-4.jpg",
+        "reverse_layout": true
+      }
+    },
+    "product_5": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "05",
+        "title": "Midnight Rose",
+        "subtitle": "FRAGRANCE NO. 05 — NOCTURNAL BLOOM",
+        "text": "A modern take on a classic floral, featuring dark rose petals, patchouli, and black pepper for a bold and alluring scent profile.",
+        "image_filename": "diffuser-5.jpg",
+        "reverse_layout": false
+      }
+    },
+    "product_6": {
+      "type": "diffuser-showcase",
+      "settings": {
+        "number": "06",
+        "title": "Citrus Grove",
+        "subtitle": "FRAGRANCE NO. 06 — ENERGIZING ZEST",
+        "text": "Revitalize your senses with a zesty explosion of grapefruit, lime, and bergamot, perfect for long commutes and early morning drives.",
+        "image_filename": "diffuser-6.jpg",
+        "reverse_layout": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "product_1",
+    "product_2",
+    "product_3",
+    "occasions",
+    "product_4",
+    "product_5",
+    "product_6"
+  ]
+}

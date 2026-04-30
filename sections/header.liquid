@@ -1,6 +1,6 @@
 <style>
   .site-header {
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -10,11 +10,28 @@
     padding: 20px 60px;
     height: 90px;
     box-sizing: border-box;
-    z-index: 50;
-    background: #f4f1eb;
+    z-index: 100;
+    background: transparent;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease;
   }
-  .template-index .site-header {
-    position: absolute;
+  .site-header.header-hidden {
+    transform: translateY(-100%);
+  }
+  .site-header.header-sticky {
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+  }
+  .site-header.header-light:not(.header-sticky) .nav-link,
+  .site-header.header-light:not(.header-sticky) .header-action-btn {
+    color: #fff;
+    opacity: 0.9;
+  }
+  .site-header.header-light:not(.header-sticky) .nav-link:hover,
+  .site-header.header-light:not(.header-sticky) .header-action-btn:hover {
+    opacity: 1;
+  }
+  .site-header.header-light:not(.header-sticky) .header-logo img {
+    filter: brightness(0) invert(1);
   }
   .header-logo {
     display: flex;
@@ -88,7 +105,7 @@
     font-weight: 600;
     letter-spacing: 0;
   }
-  /* Dropdown Styles */
+
   .nav-item-dropdown {
     position: relative;
     display: flex;
@@ -98,7 +115,7 @@
     position: absolute;
     top: 100%;
     left: -20px;
-    background: #f4f1eb;
+    background: #fff;
     min-width: 200px;
     padding: 15px 0;
     opacity: 0;
@@ -153,18 +170,18 @@
 </style>
 
 <nav class="site-header">
-  <a href="/" class="header-logo">
+  <a href="{{ routes.root_url }}" class="header-logo">
     <img src="{{ 'Fourmoons.png' | asset_url }}" alt="Fourmoons Logo" width="auto" height="45">
   </a>
-  
+
   <div class="nav-links">
-    <a href="/" class="nav-link">Home</a>
-    <a href="/collections/all" class="nav-link">Shop</a>
+    <a href="{{ routes.root_url }}" class="nav-link">Home</a>
+    <a href="{{ routes.all_products_collection_url }}" class="nav-link">Shop</a>
     <div class="nav-item-dropdown">
-      <a href="/collections/all" class="nav-link">Products</a>
+      <a href="{{ routes.all_products_collection_url }}" class="nav-link">Products</a>
       <div class="dropdown-menu">
         <a href="/pages/candles" class="dropdown-link">Candles</a>
-        <a href="/collections/car-fresheners" class="dropdown-link">Car Freshnetrs</a>
+        <a href="/pages/diffusers" class="dropdown-link">Car Diffusers</a>
       </div>
     </div>
     <a href="/pages/about" class="nav-link">About Us</a>
@@ -216,3 +233,34 @@
   ]
 }
 {% endschema %}
+
+<script>
+  (function() {
+    let lastScrollY = window.pageYOffset;
+    const header = document.querySelector('.site-header');
+    const scrollThreshold = 10;
+    const headerHeight = 90;
+
+    function onScroll() {
+      const currentScrollY = window.pageYOffset;
+      if (currentScrollY > 50) {
+        header.classList.add('header-sticky');
+      } else {
+        header.classList.remove('header-sticky');
+      }
+      if (Math.abs(currentScrollY - lastScrollY) < scrollThreshold) {
+        return;
+      }
+
+      if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
+        header.classList.add('header-hidden');
+      } else {
+        header.classList.remove('header-hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>

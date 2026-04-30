@@ -28,14 +28,14 @@
     min-height: 500px;
     order: 2;
   }
-  /* Reverse order for image left layout */
+
   .reveal-container.reversed .reveal-content {
     order: 2;
   }
   .reveal-container.reversed .reveal-image-wrapper {
     order: 1;
   }
-  
+
   .reveal-subtitle {
     font-size: 11px;
     text-transform: uppercase;
@@ -73,8 +73,8 @@
   .reveal-link:hover {
     gap: 20px;
   }
-  
-  /* Mask Reveal Styles */
+
+
   .reveal-image-mask {
     position: relative;
     width: 100%;
@@ -123,7 +123,7 @@
           <h2 class="reveal-title">{{ section.settings.title }}</h2>
         {% endif %}
       </div>
-      
+
       <div class="reveal-text-mask">
         {% if section.settings.description != blank %}
           <div class="reveal-description">
@@ -170,8 +170,6 @@
     const imageMask = section.querySelector(".reveal-image-mask");
     const image = section.querySelector(".reveal-image");
     const textMasks = section.querySelectorAll(".reveal-text-mask");
-
-    // Image Mask Reveal
     gsap.fromTo(imageMask, {
       clipPath: "inset(0% 0% 100% 0%)",
       webkitClipPath: "inset(0% 0% 100% 0%)"
@@ -199,8 +197,6 @@
         start: "top 95%",
       }
     });
-
-    // Text Mask Reveal Staggered
     gsap.fromTo(textMasks, {
       clipPath: "inset(100% 0% 0% 0%)",
       webkitClipPath: "inset(100% 0% 0% 0%)",
@@ -217,19 +213,13 @@
         start: "top 95%",
       }
     });
-
-    // Sticky Stacking Logic
     if ({% if section.settings.enable_sticky %}true{% else %}false{% endif %}) {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
         pin: true,
         pinSpacing: false,
-        end: "bottom top",
-        onUpdate: self => {
-          // Subtle fade out as it stays pinned? (Optional)
-          // section.style.opacity = 1 - self.progress * 0.5;
-        }
+        end: "bottom top"
       });
     }
   });

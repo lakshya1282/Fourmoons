@@ -1,0 +1,211 @@
+<style>
+  .diffusers-hero {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background-color: #f8f6f2;
+  }
+
+  .diffusers-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .diffusers-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.05);
+  }
+
+
+  .diffusers-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 40%, transparent 80%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .diffusers-hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 80px;
+    width: 100%;
+  }
+
+  .diffusers-hero-inner {
+    max-width: 600px;
+    opacity: 0;
+    transform: translateY(30px);
+    color: #1a1a1a;
+  }
+
+  .diffusers-hero-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 25px;
+    display: block;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .diffusers-hero-title {
+    font-family: 'Lora', serif;
+    font-size: 72px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 35px;
+  }
+
+  .diffusers-hero-divider {
+    width: 80px;
+    height: 1px;
+    background: #c5a880;
+    margin-bottom: 35px;
+  }
+
+  .diffusers-hero-subtitle {
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(0, 0, 0, 0.8);
+    max-width: 480px;
+    margin-bottom: 45px;
+  }
+
+  .diffusers-hero-cta {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 18px 45px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .diffusers-hero-cta:hover {
+    background: #c5a880;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 1024px) {
+    .diffusers-hero { height: 75vh; }
+    .diffusers-hero-content { padding: 0 40px; }
+    .diffusers-hero-title { font-size: 56px; }
+  }
+
+  @media (max-width: 768px) {
+    .diffusers-hero { height: 80vh; align-items: flex-end; padding-bottom: 80px; }
+    .diffusers-hero-title { font-size: 42px; }
+    .diffusers-hero-overlay {
+      background: linear-gradient(to top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    }
+    .diffusers-hero-inner { max-width: 100%; }
+  }
+</style>
+
+<section class="diffusers-hero">
+  <div class="diffusers-hero-bg">
+    <img src="{{ section.settings.image | default: 'diffuserhero.png' | asset_url }}" alt="{{ section.settings.title }}">
+  </div>
+
+  <div class="diffusers-hero-overlay"></div>
+
+  <div class="diffusers-hero-content">
+    <div class="diffusers-hero-inner" id="diffusersHeroInner">
+      <span class="diffusers-hero-label">{{ section.settings.label | default: "Car Diffusers" }}</span>
+      <h1 class="diffusers-hero-title">{{ section.settings.title | default: "Aromatic journeys, anywhere." }}</h1>
+      <div class="diffusers-hero-divider"></div>
+      <p class="diffusers-hero-subtitle">
+        {{ section.settings.subtitle | default: "Elevate your driving experience with our premium car diffusers, designed to fill your vehicle with calming, long-lasting fragrances." }}
+      </p>
+      <a href="{{ section.settings.button_link | default: '/collections/car-diffusers' }}" class="diffusers-hero-cta">
+        {{ section.settings.button_label | default: "Shop Collection" }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof gsap !== 'undefined') {
+      gsap.to('#diffusersHeroInner', {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: 'power3.out',
+        delay: 0.5
+      });
+
+      gsap.to('.diffusers-hero-bg img', {
+        scale: 1,
+        duration: 2.5,
+        ease: 'power2.out'
+      });
+    } else {
+      document.getElementById('diffusersHeroInner').style.opacity = '1';
+      document.getElementById('diffusersHeroInner').style.transform = 'translateY(0)';
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Diffusers Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Top Label",
+      "default": "Car Diffusers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Aromatic journeys, anywhere."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Elevate your driving experience with our premium car diffusers, designed to fill your vehicle with calming, long-lasting fragrances."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ]
+}
+{% endschema %}

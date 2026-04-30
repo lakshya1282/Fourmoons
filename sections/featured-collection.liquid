@@ -22,7 +22,7 @@
     font-weight: 500;
   }
   .section-title {
-    font-family: serif; /* Will be replaced by Lora in theme.liquid */
+    font-family: serif;
     font-size: 42px;
     font-weight: 400;
     margin: 0 0 15px 0;
@@ -173,8 +173,8 @@
           <h3 class="product-title">{{ product.title }}</h3>
           <p class="product-category">{{ product.type | default: 'Scented Candle' }}</p>
           <p class="product-price">{{ product.price | money }}</p>
-          
-          <form method="post" action="/cart/add" class="product-card-form" style="margin-top: 15px;">
+
+          <form method="post" action="{{ routes.cart_add_url }}" class="product-card-form" style="margin-top: 15px;">
             <input type="hidden" name="id" value="{{ product.variants.first.id }}">
             <button type="submit" class="add-to-cart-btn">Add to Bag</button>
           </form>
@@ -295,4 +295,3 @@
   ]
 }
 {% endschema %}
-

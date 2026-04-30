@@ -135,8 +135,17 @@
   }
 
   @media (max-width: 768px) {
-    .hero-title { font-size: 48px; }
-    .hero-content-wrapper { padding: 0 40px; }
+    .collection-hero { height: 60vh; }
+    .hero-title { font-size: 42px; }
+    .hero-content-wrapper { padding: 0 30px; }
+    .hero-description { font-size: 13px; margin-bottom: 30px; }
+    .hero-cta { padding: 12px 24px; font-size: 10px; }
+  }
+
+  @media (max-width: 480px) {
+    .collection-hero { height: 50vh; }
+    .hero-title { font-size: 34px; }
+    .hero-content-wrapper { padding: 0 20px; }
   }
 </style>
 
@@ -176,8 +185,6 @@
     const section = document.getElementById('collection-hero-{{ section.id }}');
     const slides = section.querySelectorAll('.carousel-slide');
     let currentSlide = 0;
-
-    // Carousel Logic
     if (slides.length > 1) {
       setInterval(() => {
         slides[currentSlide].classList.remove('active');
@@ -185,11 +192,9 @@
         slides[currentSlide].classList.add('active');
       }, 5000);
     }
-
-    // GSAP Zoom Effect on Scroll
     if (typeof gsap !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
-      
+
       gsap.to('.carousel-container img', {
         scale: 1.2,
         ease: "none",

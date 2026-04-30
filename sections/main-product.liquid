@@ -1,6 +1,6 @@
 <style>
   :root {
-    --color-purple: #4B436D;
+    --color-purple: #000000;
     --color-beige: #F8F6F2;
     --color-text-dark: #1A1A1A;
     --color-text-light: #666666;
@@ -14,7 +14,7 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* Breadcrumbs */
+
   .breadcrumbs {
     font-size: 13px;
     color: var(--color-text-light);
@@ -23,7 +23,7 @@
   .breadcrumbs a { color: inherit; text-decoration: none; }
   .breadcrumbs span { margin: 0 10px; }
 
-  /* Hero Section */
+
   .product-hero {
     display: grid;
     grid-template-columns: 80px 1fr 1fr;
@@ -32,7 +32,7 @@
     margin-bottom: 100px;
   }
 
-  /* Gallery */
+
   .product-thumbnails {
     display: flex;
     flex-direction: column;
@@ -71,14 +71,14 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
-  /* Info */
+
   .product-info-wrap {
     padding-left: 20px;
   }
   .best-seller-tag {
     display: inline-block;
     padding: 4px 12px;
-    background: #D7C4F2;
+    background: #f0f0f0;
     color: var(--color-purple);
     font-size: 11px;
     font-weight: 700;
@@ -115,20 +115,46 @@
   .catch-phrase { font-weight: 700; color: var(--color-text-dark); margin-bottom: 10px; display: block; }
   .short-desc { font-size: 15px; color: var(--color-text-light); line-height: 1.6; margin-bottom: 35px; }
 
-  /* Options */
+
   .option-label { font-size: 13px; font-weight: 700; margin-bottom: 12px; display: block; }
-  .size-pills { display: flex; gap: 10px; margin-bottom: 30px; }
+  .size-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px; }
   .size-pill {
-    padding: 10px 24px;
+    padding: 15px 10px;
     border: 1px solid var(--color-border);
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.3s;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background: #fff;
   }
-  .size-pill.active { background: var(--color-purple); color: #fff; border-color: var(--color-purple); }
+  .size-pill.active { border-color: var(--color-purple); background: #fdfaf5; box-shadow: 0 0 0 1px var(--color-purple); }
+  .size-pill:hover { border-color: #ccc; }
 
-  .qty-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
+  .pill-name { font-weight: 700; margin-bottom: 4px; display: block; }
+  .pill-info { font-size: 11px; color: var(--color-text-light); display: block; }
+  .pill-price { font-size: 12px; font-weight: 700; margin-top: 6px; display: block; color: var(--color-text-dark); }
+
+  .pill-popular {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-purple);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .qty-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; border-top: 1px solid var(--color-border); padding-top: 30px; }
   .qty-controls {
     display: flex;
     align-items: center;
@@ -151,33 +177,42 @@
 
   .button-group { display: flex; gap: 15px; margin-bottom: 40px; }
   .btn-add-to-cart {
-    flex: 1;
+    flex: 2;
     background: var(--color-purple);
     color: #fff;
     border: none;
-    padding: 18px;
+    padding: 20px;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    transition: all 0.3s ease;
   }
+  .btn-add-to-cart:hover { background: #333; transform: translateY(-2px); }
+
   .btn-buy-now {
     flex: 1;
     background: transparent;
     color: var(--color-text-dark);
     border: 1px solid var(--color-text-dark);
-    padding: 18px;
+    padding: 20px;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     cursor: pointer;
+    transition: all 0.3s ease;
   }
+  .btn-buy-now:hover { background: #f9f9f9; transform: translateY(-2px); }
 
-  /* Trust Badges */
+
   .trust-badges {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -188,7 +223,7 @@
   .trust-item { text-align: center; font-size: 11px; color: var(--color-text-light); line-height: 1.3; }
   .trust-item svg { width: 24px; height: 24px; margin-bottom: 8px; color: var(--color-purple); }
 
-  /* Scent Notes Section */
+
   .scent-notes-section {
     background: var(--color-beige);
     border-radius: 20px;
@@ -207,7 +242,7 @@
   .note-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-light); margin-bottom: 10px; display: block; }
   .note-name { font-size: 14px; font-weight: 700; color: var(--color-text-dark); line-height: 1.4; }
 
-  /* Why You'll Love It */
+
   .benefits-section { margin-bottom: 120px; text-align: center; }
   .benefits-section h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 50px; font-weight: 400; }
   .benefits-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
@@ -216,7 +251,7 @@
   .benefit-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
   .benefit-desc { font-size: 11px; color: var(--color-text-light); line-height: 1.4; }
 
-  /* Ritual Banner */
+
   .ritual-banner {
     background: #6D5E53 url('https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=2000') no-repeat center;
     background-size: cover;
@@ -236,17 +271,17 @@
   .ritual-content h2 { font-family: 'Lora', serif; font-size: 36px; margin-bottom: 20px; font-weight: 400; }
   .ritual-btn { background: #fff; color: var(--color-text-dark); padding: 12px 30px; border-radius: 100px; text-decoration: none; font-size: 13px; font-weight: 600; }
 
-  /* Lower Layout */
+
   .lower-layout { display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 60px; margin-bottom: 120px; }
-  
-  /* Accordion */
+
+
   .accordion-item { border-bottom: 1px solid var(--color-border); }
   .accordion-title { padding: 18px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 14px; font-weight: 700; }
   .accordion-content { padding-bottom: 20px; font-size: 14px; color: var(--color-text-light); line-height: 1.6; display: none; }
   .accordion-item.active .accordion-content { display: block; }
   .accordion-item.active svg { transform: rotate(180deg); }
 
-  /* How to Use */
+
   .how-to-use h3 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 30px; font-weight: 400; text-align: center; }
   .steps { display: flex; flex-direction: column; gap: 30px; }
   .step-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -254,12 +289,12 @@
   .step-num { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
   .step-text { font-size: 12px; color: var(--color-text-light); line-height: 1.5; }
 
-  /* Reviews */
+
   .reviews-summary h3 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 20px; font-weight: 400; }
   .rating-flex { display: flex; align-items: baseline; gap: 15px; margin-bottom: 25px; }
   .rating-big { font-size: 48px; font-weight: 600; }
   .rating-sub { font-size: 13px; color: var(--color-text-light); }
-  
+
   .rating-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
   .bar-item { display: flex; align-items: center; gap: 10px; font-size: 12px; }
   .bar-track { flex: 1; height: 6px; background: #EEE; border-radius: 10px; overflow: hidden; }
@@ -272,7 +307,7 @@
   .nav-dot { width: 6px; height: 6px; background: #DDD; border-radius: 50%; cursor: pointer; }
   .nav-dot.active { background: var(--color-purple); }
 
-  /* You May Also Like */
+
   .cross-sell-section { margin-bottom: 120px; }
   .cross-sell-section h2 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 40px; font-weight: 400; }
   .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -284,7 +319,7 @@
   .p-price { font-size: 13px; color: var(--color-text-light); margin-top: 4px; }
   .btn-cart-small { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-  /* Newsletter Box */
+
   .newsletter-box {
     background: var(--color-beige);
     border-radius: 20px;
@@ -303,23 +338,21 @@
 
   @media (max-width: 1024px) {
     .product-hero { grid-template-columns: 1fr; }
-    .product-thumbnails { order: 2; flex-direction: row; }
+    .product-thumbnails { order: 2; flex-direction: row; justify-content: center; }
     .product-main-media { order: 1; }
     .product-info-wrap { order: 3; padding: 0; }
     .scent-notes-section, .lower-layout { grid-template-columns: 1fr; gap: 40px; }
     .benefits-grid { grid-template-columns: repeat(3, 1fr); }
     .product-grid { grid-template-columns: repeat(2, 1fr); }
     .newsletter-box { flex-direction: column; text-align: center; }
+    .size-pills { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 
 <div class="product-container" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}">
-  <!-- Breadcrumbs -->
   <nav class="breadcrumbs">
-    <a href="/">Home</a> <span>/</span> <a href="/collections/all">Shop</a> <span>/</span> {{ product.title }}
+    <a href="{{ routes.root_url }}">Home</a> <span>/</span> <a href="{{ routes.all_products_collection_url }}">Shop</a> <span>/</span> {{ product.title }}
   </nav>
-
-  <!-- Hero Section -->
   <div class="product-hero">
     <div class="product-thumbnails">
       {% for image in product.images %}
@@ -339,13 +372,13 @@
     <div class="product-info-wrap">
       <span class="best-seller-tag">Best Seller</span>
       <h1 class="product-title">{{ product.title }}</h1>
-      
+
       <div class="product-rating">
         <span class="stars">★★★★★</span>
         <span>4.8 (124 reviews)</span>
       </div>
 
-      <p class="product-price">{{ product.price | money }}</p>
+      <p class="product-price" id="MainProductPrice">{{ product.selected_or_first_available_variant.price | money }}</p>
       <p class="tax-note">Inclusive of all taxes</p>
 
       <span class="catch-phrase">Sweet Serenity in Every Flicker 🫐 🕯️</span>
@@ -353,8 +386,44 @@
         A delightful blend of juicy, fruity blueberry and soft, creamy vanilla that's both uplifting and calming.
       </p>
 
-      <form method="post" action="/cart/add" id="AddToCartForm">
-        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      <form method="post" action="{{ routes.cart_add_url }}" id="AddToCartForm">
+        {% liquid
+          assign first_variant = product.selected_or_first_available_variant
+        %}
+        <input type="hidden" name="id" value="{{ first_variant.id }}" id="SelectedVariantId">
+
+        <span class="option-label">Choose Size</span>
+        <div class="size-pills">
+          {% for variant in product.variants %}
+            {% liquid
+              assign is_popular = false
+              if variant.title contains 'Medium' or variant.title contains '8 oz'
+                assign is_popular = true
+              endif
+
+              assign weight = variant.title | split: ' / ' | last
+              if weight == variant.title
+                assign weight = ""
+              endif
+
+              assign burn_time = "15 hrs"
+              if variant.title contains 'Medium' or variant.title contains '8 oz'
+                assign burn_time = "30 hrs"
+              elsif variant.title contains 'Large' or variant.title contains '12 oz'
+                assign burn_time = "50 hrs"
+              endif
+            %}
+            <div class="size-pill {% if variant.id == first_variant.id %}active{% endif %}"
+                 data-variant-id="{{ variant.id }}"
+                 data-price="{{ variant.price | money }}"
+                 data-image="{{ variant.image | default: product.featured_image | image_url: width: 1000 }}">
+              {% if is_popular %}<span class="pill-popular">Popular</span>{% endif %}
+              <span class="pill-name">{{ variant.title | split: ' / ' | first }}</span>
+              <span class="pill-info">{{ weight | default: "Standard" }} • {{ burn_time }}</span>
+              <span class="pill-price">{{ variant.price | money_without_trailing_zeros }}</span>
+            </div>
+          {% endfor %}
+        </div>
 
         <div class="qty-selector">
           <span class="option-label" style="margin: 0;">Quantity</span>
@@ -394,8 +463,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Scent Notes -->
   <div class="scent-notes-section">
     <div class="notes-intro">
       <h2>A Moment of Calm, Poured into Every Jar</h2>
@@ -419,8 +486,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Benefits -->
   <div class="benefits-section">
     <h2>Why You'll Love It</h2>
     <div class="benefits-grid">
@@ -456,16 +521,12 @@
       </div>
     </div>
   </div>
-
-  <!-- Ritual Banner -->
   <div class="ritual-banner">
     <div class="ritual-content">
       <h2>Transform Everyday<br>Moments into Rituals</h2>
-      <a href="/collections/all" class="ritual-btn">Explore More Scents</a>
+      <a href="{{ routes.all_products_collection_url }}" class="ritual-btn">Explore More Scents</a>
     </div>
   </div>
-
-  <!-- Lower Layout -->
   <div class="lower-layout">
     <div class="product-details-accordion">
       <h3>Product Details</h3>
@@ -548,8 +609,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Cross Sell -->
   <div class="cross-sell-section">
     <h2>You May Also Like</h2>
     <div class="product-grid">
@@ -611,8 +670,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Newsletter -->
   <div class="newsletter-box">
     <div class="news-text">
       <h2>Get 10% Off Your First Order</h2>
@@ -632,10 +689,32 @@
   document.addEventListener('DOMContentLoaded', function() {
     const section = document.querySelector('#ProductSection-{{ section.id }}');
     if (!section) return;
-
-    // Thumbnail Switch
-    const thumbs = section.querySelectorAll('.thumb-item');
+    const sizePills = section.querySelectorAll('.size-pill');
     const mainImg = section.querySelector('#MainProductImage');
+    const mainPrice = section.querySelector('#MainProductPrice');
+    const variantIdInput = section.querySelector('#SelectedVariantId');
+    const thumbs = section.querySelectorAll('.thumb-item');
+
+    sizePills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        sizePills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const variantId = pill.getAttribute('data-variant-id');
+        variantIdInput.value = variantId;
+        const price = pill.getAttribute('data-price');
+        mainPrice.textContent = price;
+        const img = pill.getAttribute('data-image');
+        if (img) {
+          mainImg.src = img;
+          thumbs.forEach(t => {
+            if (t.getAttribute('data-image') === img) {
+              thumbs.forEach(thumb => thumb.classList.remove('active'));
+              t.classList.add('active');
+            }
+          });
+        }
+      });
+    });
     thumbs.forEach(thumb => {
       thumb.addEventListener('click', () => {
         thumbs.forEach(t => t.classList.remove('active'));
@@ -643,15 +722,11 @@
         mainImg.src = thumb.getAttribute('data-image');
       });
     });
-
-    // Quantity
     const qtyInput = section.querySelector('.qty-input');
     const plus = section.querySelector('.plus');
     const minus = section.querySelector('.minus');
     plus.addEventListener('click', () => { qtyInput.value = parseInt(qtyInput.value) + 1; });
     minus.addEventListener('click', () => { if(qtyInput.value > 1) qtyInput.value = parseInt(qtyInput.value) - 1; });
-
-    // Accordion
     const accordions = section.querySelectorAll('.accordion-title');
     accordions.forEach(acc => {
       acc.addEventListener('click', () => {

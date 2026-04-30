@@ -137,7 +137,6 @@
   </div>
 
   <div class="bento-grid">
-    <!-- Car Diffusers -->
     <div class="bento-item bento-item--car" data-aos="fade-up">
       <div class="bento-img-wrapper" data-parallax="0.15">
         {% if section.settings.car_image != blank %}
@@ -153,8 +152,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Wax Candles -->
     <div class="bento-item bento-item--wax" data-aos="fade-up" data-aos-delay="100">
       <div class="bento-img-wrapper" data-parallax="0.1">
         {% if section.settings.wax_image != blank %}
@@ -170,8 +167,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Air Fresheners -->
     <div class="bento-item bento-item--air" data-aos="fade-up" data-aos-delay="200">
       <div class="bento-img-wrapper" data-parallax="0.2">
         {% if section.settings.air_image != blank %}
@@ -187,8 +182,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Custom Candles -->
     <div class="bento-item bento-item--custom" data-aos="fade-up" data-aos-delay="300">
       <div class="bento-img-wrapper" data-parallax="0.1">
         {% if section.settings.custom_image != blank %}
@@ -210,8 +203,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const bentoItems = document.querySelectorAll('.bento-item');
-
-    // Parallax Effect for Bento Images
     const parallaxImages = document.querySelectorAll('[data-parallax]');
     parallaxImages.forEach(img => {
       gsap.fromTo(img, {
@@ -227,20 +218,18 @@
         }
       });
     });
-
-    // 3D Tilt Hover Animation
     bentoItems.forEach(item => {
       const title = item.querySelector('.bento-title');
       const details = item.querySelector('.bento-details');
       const img = item.querySelector('.bento-img');
-      
+
       item.addEventListener('mousemove', (e) => {
         const { left, top, width, height } = item.getBoundingClientRect();
         const x = (e.clientX - left) / width - 0.5;
         const y = (e.clientY - top) / height - 0.5;
-        
+
         gsap.to(item, {
-          rotateY: x * 8, 
+          rotateY: x * 8,
           rotateX: -y * 8,
           transformPerspective: 1000,
           scale: 1.02,
@@ -266,7 +255,7 @@
           });
         }
       });
-      
+
       item.addEventListener('mouseleave', () => {
         gsap.to(item, {
           rotateY: 0,
