@@ -64,7 +64,11 @@
     <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js" defer></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        if (!window.Lenis || !window.gsap || !window.ScrollTrigger || !window.AOS) return;
+
         const lenis = new Lenis();
+        let aosRefreshQueued = false;
+
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => {
           lenis.raf(time * 1000);
@@ -77,7 +81,12 @@
           offset: 100
         });
         lenis.on('scroll', () => {
-          AOS.refresh();
+          if (aosRefreshQueued) return;
+          aosRefreshQueued = true;
+          requestAnimationFrame(() => {
+            AOS.refresh();
+            aosRefreshQueued = false;
+          });
         });
       });
     </script>

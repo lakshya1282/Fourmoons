@@ -1,37 +1,11 @@
 {
   "sections": {
-    "hero": {
-      "type": "collection-hero",
-      "blocks": {
-        "slide_1": {
-          "type": "image",
-          "settings": {}
-        },
-        "slide_2": {
-          "type": "image",
-          "settings": {}
-        },
-        "slide_3": {
-          "type": "image",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "slide_1",
-        "slide_2",
-        "slide_3"
-      ],
-      "settings": {
-        "subtitle": "CURATED ESSENTIALS"
-      }
-    },
     "main": {
       "type": "main-collection",
       "settings": {}
     }
   },
   "order": [
-    "hero",
     "main"
   ]
 }

@@ -1,13 +1,13 @@
 <style>
   .collection-main {
     background-color: #fdfaf5;
-    padding: 60px 40px;
+    padding: 150px 40px 60px 40px;
     min-height: 100vh;
   }
 
   @media (max-width: 768px) {
     .collection-main {
-      padding: 30px 15px;
+      padding: 120px 15px 30px 15px;
     }
   }
 
@@ -518,6 +518,27 @@
       padding: 10px 2px;
     }
   }
+
+  .apply-filters-btn {
+    width: calc(100% - 50px);
+    margin: 25px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .apply-filters-btn:hover {
+    background: #333;
+    letter-spacing: 0.2em;
+  }
 </style>
 
 {% liquid
@@ -544,10 +565,20 @@
             <span class="filter-toggle">−</span>
           </div>
           <ul class="filter-list">
-            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="all" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> All</label></li>
-            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="wax-candles" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Wax Candles</label></li>
-            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="car-diffusers" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Car Diffusers</label></li>
-            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="fragrance-candles" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Fragrance Candles</label></li>
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="all" data-filter-type="category" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> All</label></li>
+            <li class="filter-item"><label class="filter-label"><input type="checkbox" value="diffuser" data-filter-type="category" class="filter-input" style="display:none;"><span class="filter-checkbox"></span> Diffuser</label></li>
+            {% assign types = products_to_show | map: 'type' | uniq %}
+            {% for type in types %}
+              {% if type != blank %}
+                <li class="filter-item">
+                  <label class="filter-label">
+                    <input type="checkbox" value="{{ type | handleize }}" data-filter-type="category" class="filter-input" style="display:none;">
+                    <span class="filter-checkbox"></span>
+                    {{ type }}
+                  </label>
+                </li>
+              {% endif %}
+            {% endfor %}
           </ul>
         </div>
         <div class="filter-group">
@@ -556,17 +587,19 @@
             <span class="filter-toggle">−</span>
           </div>
           <ul class="filter-list">
-            {% assign scents = "Floral (8),Woody (7),Citrus (5),Spicy (4),Fresh (3),Herbal (3)" | split: "," %}
-            {% for scent_data in scents %}
-              {% assign parts = scent_data | split: " (" %}
-              {% assign scent_val = parts[0] | handleize %}
-              <li class="filter-item">
-                <label class="filter-label">
-                  <input type="checkbox" value="{{ scent_val }}" class="filter-input" style="display:none;">
-                  <span class="filter-checkbox"></span>
-                  {{ parts[0] }} <span class="filter-count">({{ parts[1] }}</span>
-                </label>
-              </li>
+            {% assign all_tags = products_to_show | map: 'tags' | join: ',' | split: ',' | uniq %}
+            {% assign exclude_tags = "new,best-seller,featured,sale" | split: "," %}
+            {% for tag in all_tags %}
+              {% assign tag_handle = tag | handleize %}
+              {% unless exclude_tags contains tag_handle or tag_handle == blank %}
+                <li class="filter-item">
+                  <label class="filter-label">
+                    <input type="checkbox" value="{{ tag_handle }}" data-filter-type="scent" class="filter-input" style="display:none;">
+                    <span class="filter-checkbox"></span>
+                    {{ tag | capitalize }}
+                  </label>
+                </li>
+              {% endunless %}
             {% endfor %}
           </ul>
         </div>
@@ -593,9 +626,9 @@
             <span>SORT BY:</span>
             <div class="sort-select-wrapper">
               <select class="sort-select">
-                <option>Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
               </select>
             </div>
           </div>
@@ -614,11 +647,14 @@
         {% for product in products_to_show %}
           {% liquid
             assign first_variant = product.selected_or_first_available_variant
+            assign card_image = first_variant.image | default: product.featured_image
           %}
+          {% capture product_tags %}{%- for tag in product.tags -%}{{ tag | handleize }}{% unless forloop.last %},{% endunless %}{%- endfor -%}{% endcapture %}
           <div class="product-card"
                data-category="{{ product.type | handleize }}"
-               data-scent="{{ product.tags | first | handleize }}"
+               data-tags="{{ product_tags }}"
                data-price="{{ first_variant.price | divided_by: 100.0 }}"
+               data-index="{{ forloop.index }}"
                id="product-{{ product.id }}">
 
             <div class="product-image-container">
@@ -633,7 +669,14 @@
               </button>
 
               <a href="{{ product.url }}">
-                <img class="main-card-img" src="{{ first_variant.image | default: product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}">
+                <img
+                  class="main-card-img"
+                  src="{{ card_image | image_url: width: 800 }}"
+                  alt="{{ product.title }}"
+                  width="{{ card_image.width }}"
+                  height="{{ card_image.height }}"
+                  loading="lazy"
+                >
               </a>
             </div>
 
@@ -721,7 +764,14 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const productCards = document.querySelectorAll('.product-card');
+    const productCards = Array.from(document.querySelectorAll('.product-card'));
+    const productTags = new Map(productCards.map(card => [
+      card,
+      (card.dataset.tags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean)
+    ]));
 
     productCards.forEach(card => {
       const sizeOptions = card.querySelectorAll('.size-option-card');
@@ -761,30 +811,86 @@
       });
     }
     const applyFiltersBtn = document.getElementById('apply-filters-btn');
+    const clearAllBtn = document.querySelector('.clear-all');
+    const allCheckbox = document.querySelector('.filter-input[value="all"]');
+    const filterInputs = Array.from(document.querySelectorAll('.filter-input'));
+    const countDisplay = document.querySelector('.product-count-text');
+
+    const getCheckedFilterValues = filterType => filterInputs
+      .filter(input => input.dataset.filterType === filterType && input.checked && input.value !== 'all')
+      .map(input => input.value);
+
+    function applyFilters() {
+      const selectedCategories = getCheckedFilterValues('category');
+      const selectedScents = getCheckedFilterValues('scent');
+      const isAllSelected = Boolean(allCheckbox && allCheckbox.checked);
+      let visibleCount = 0;
+
+      productCards.forEach(card => {
+        const tags = productTags.get(card) || [];
+        const categoryMatch = selectedCategories.length === 0
+          || isAllSelected
+          || selectedCategories.includes(card.dataset.category);
+        const scentMatch = selectedScents.length === 0 || selectedScents.some(scent => tags.includes(scent));
+        const isVisible = categoryMatch && scentMatch;
+
+        card.style.display = isVisible ? 'flex' : 'none';
+        if (isVisible) visibleCount += 1;
+      });
+
+      if (countDisplay) countDisplay.textContent = `${visibleCount} Products`;
+    }
+
     if (applyFiltersBtn) {
-      applyFiltersBtn.addEventListener('click', function() {
-        const selectedCategories = Array.from(document.querySelectorAll('.filter-input[value]:checked'))
-          .filter(input => ['wax-candles', 'car-diffusers', 'fragrance-candles'].includes(input.value))
-          .map(input => input.value);
+      applyFiltersBtn.addEventListener('click', applyFilters);
+    }
 
-        const selectedScents = Array.from(document.querySelectorAll('.filter-input[value]:checked'))
-          .filter(input => !['all', 'wax-candles', 'car-diffusers', 'fragrance-candles'].includes(input.value))
-          .map(input => input.value);
+    if (allCheckbox) {
+      allCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          filterInputs.forEach(input => {
+            if (input !== this) input.checked = false;
+          });
+          applyFilters();
+        }
+      });
+    }
 
-        const isAllSelected = document.querySelector('.filter-input[value="all"]:checked');
-
-        productCards.forEach(card => {
-          const cat = card.getAttribute('data-category');
-          const scent = card.getAttribute('data-scent');
-          let show = true;
-
-          if (!isAllSelected) {
-            if (selectedCategories.length > 0 && !selectedCategories.includes(cat)) show = false;
-            if (selectedScents.length > 0 && !selectedScents.includes(scent)) show = false;
+    filterInputs.forEach(input => {
+      if (input.value !== 'all') {
+        input.addEventListener('change', function() {
+          if (this.checked && allCheckbox) {
+            allCheckbox.checked = false;
           }
-
-          card.style.display = show ? 'flex' : 'none';
         });
+      }
+    });
+
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        filterInputs.forEach(input => input.checked = false);
+        applyFilters();
+      });
+    }
+
+    const sortSelect = document.querySelector('.sort-select');
+    if (sortSelect && grid) {
+      sortSelect.addEventListener('change', function() {
+        const value = this.value;
+        const cards = Array.from(grid.querySelectorAll('.product-card'));
+
+        cards.sort((a, b) => {
+          if (value === 'price-asc') {
+            return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+          } else if (value === 'price-desc') {
+            return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+          } else {
+            return parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index'));
+          }
+        });
+
+        cards.forEach(card => grid.appendChild(card));
       });
     }
   });
